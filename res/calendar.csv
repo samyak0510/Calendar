@@ -1,0 +1,23 @@
+Subject,Start Date,Start Time,End Date,End Time,Description,Location,Public
+TeamMeeting,2025-03-01,08:30,2025-03-01,09:30,UpdatedDescription,Room202,false
+Workshop,2025-03-01,09:30,2025-03-01,11:00,,,true
+Lunch,2025-03-01,12:00,2025-03-01,13:00,,,true
+FullDayConf,2025-03-02,00:00,2025-03-02,23:59,,,true
+DailyStandup,2025-03-03,09:00,2025-03-03,09:15,,,true
+DailyStandup,2025-03-04,09:00,2025-03-04,09:15,,,true
+DailyStandup,2025-03-05,09:00,2025-03-05,09:15,,,true
+DailyStandup,2025-03-06,09:00,2025-03-06,09:15,,,true
+DailyStandup,2025-03-07,09:00,2025-03-07,09:15,,,true
+WeekendEvent,2025-03-09,00:00,2025-03-09,23:59,,,true
+WeekendEvent,2025-03-16,00:00,2025-03-16,23:59,,,true
+Krunal,2025-03-09,00:00,2025-03-09,23:59,,,true
+Krunal,2025-03-16,00:00,2025-03-16,23:59,,,true
+Standup,2025-03-21,09:00,2025-03-21,09:15,,,false
+Standup,2025-03-24,09:00,2025-03-24,09:15,,,false
+Standup,2025-03-25,09:00,2025-03-25,09:15,,,false
+Standup,2025-03-26,09:00,2025-03-26,09:15,,,false
+Standup,2025-03-27,09:00,2025-03-27,09:15,,,false
+FinalMeeting,2025-03-04,09:00,2025-03-04,10:00,,,true
+AllMeeting,2025-03-04,11:00,2025-03-04,12:00,,,true
+FinalMeeting,2025-03-05,09:00,2025-03-05,10:00,,,true
+FinalMeeting,2025-03-06,09:00,2025-03-06,10:00,,,true
