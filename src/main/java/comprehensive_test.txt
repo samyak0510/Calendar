@@ -3,7 +3,7 @@ create event Workshop from 2025-03-01T09:30 to 2025-03-01T11:00 public
 create event --autoDecline Lunch from 2025-03-01T12:00 to 2025-03-01T13:00
 create event --autoDecline FullDayConf on 2025-03-02
 create event --autoDecline DailyStandup from 2025-03-03T09:00 to 2025-03-03T09:15 repeats MTWRF for 5 times
-create event WeekendEvent on 2025-03-07T00:00 repeats U until 2025-03-21
+create event WeekendEvent on 2025-03-07T10:00 repeats U until 2025-03-21
 create event --autoDecline RecConflictTest from 2025-03-03T09:05 to 2025-03-03T09:10 repeats M for 2 times
 create event Standup from 2025-03-21T09:00 to 2025-03-21T09:15 repeats MTWRF for 5 times private
 edit event subject Meeting from 2025-03-01T09:00 to 2025-03-01T10:00 with TeamMeeting

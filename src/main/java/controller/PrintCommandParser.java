@@ -1,24 +1,18 @@
 package controller;
 
-import model.CalendarModel;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import model.ICalendarService;
 
-/**
- * Parses print commands to display events on a specific date or within a range.
- */
+
 public class PrintCommandParser implements ICommandParser {
 
-  private CalendarModel calendar;
+  private ICalendarService calendar;
   private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-  /**
-   * Constructs a PrintCommandParser with the specified calendar model.
-   *
-   * @param calendar the calendar model to use for printing events
-   */
-  public PrintCommandParser(CalendarModel calendar) {
+
+  public PrintCommandParser(ICalendarService calendar) {
     this.calendar = calendar;
   }
 

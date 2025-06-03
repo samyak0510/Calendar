@@ -1,37 +1,23 @@
 package controller;
 
-import model.CalendarModel;
+import model.ICalendarService;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Parses "create" commands and constructs the appropriate event creation command.
- */
 public class CreateCommandParser implements ICommandParser {
 
-  private CalendarModel calendar;
+  private ICalendarService service;
   private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+  private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
-  /**
-   * Constructs a CreateCommandParser with the given calendar model.
-   *
-   * @param calendar the calendar model to be used
-   */
-  public CreateCommandParser(CalendarModel calendar) {
-    this.calendar = calendar;
+  public CreateCommandParser(ICalendarService service) {
+    this.service = service;
   }
 
-  /**
-   * Parses tokens for a create command and returns a corresponding Command.
-   *
-   * @param tokens the array of command tokens
-   * @return a Command representing the create event operation
-   */
   @Override
   public Command parse(String[] tokens) {
     try {
@@ -57,10 +43,10 @@ public class CreateCommandParser implements ICommandParser {
         String endDTStr = tokens[index++];
         LocalDateTime end = CommandParserStatic.parseDateTimeStatic(endDTStr);
         if (index < tokens.length && tokens[index].equalsIgnoreCase("repeats")) {
-          return getCommand(tokens, autoDecline, index, subject, start, end);
+          return getRecurringCommand(tokens, autoDecline, index, subject, start, end);
         } else {
           boolean isPublic = isABoolean(tokens, index);
-          return new CreateEventCommand(calendar, autoDecline, subject,
+          return new CreateEventCommand(service, autoDecline, subject,
               start, end, "", "", isPublic);
         }
       } else if (tokens[index].equalsIgnoreCase("on")) {
@@ -69,17 +55,20 @@ public class CreateCommandParser implements ICommandParser {
         LocalDateTime start;
         LocalDateTime end;
         if (dateStr.contains("T")) {
-          start = LocalDateTime.of(LocalDateTime.parse(dateStr).toLocalDate(), LocalTime.MIN);
-          end = LocalDateTime.of(LocalDateTime.parse(dateStr).toLocalDate(), LocalTime.of(23, 59));
+          // If a date-time string is provided for an all-day event, ignore the time part.
+          LocalDateTime dt = LocalDateTime.parse(dateStr, DATE_TIME_FORMAT);
+          start = dt.toLocalDate().atStartOfDay();
+          end = dt.toLocalDate().atTime(23, 59);
         } else {
-          start = LocalDate.parse(dateStr, DATE_FORMAT).atStartOfDay();
-          end = LocalDate.parse(dateStr, DATE_FORMAT).atTime(23, 59);
+          LocalDate date = LocalDate.parse(dateStr, DATE_FORMAT);
+          start = date.atStartOfDay();
+          end = date.atTime(23, 59);
         }
         if (index < tokens.length && tokens[index].equalsIgnoreCase("repeats")) {
-          return getCommand(tokens, autoDecline, index, subject, start, end);
+          return getRecurringCommand(tokens, autoDecline, index, subject, start, end);
         } else {
           boolean isPublic = isABoolean(tokens, index);
-          return new CreateEventCommand(calendar, autoDecline, subject,
+          return new CreateEventCommand(service, autoDecline, subject,
               start, end, "", "", isPublic);
         }
       } else {
@@ -104,9 +93,9 @@ public class CreateCommandParser implements ICommandParser {
     return isPublic;
   }
 
-  private Command getCommand(String[] tokens, boolean autoDecline, int index, String subject,
+  private Command getRecurringCommand(String[] tokens, boolean autoDecline, int index, String subject,
       LocalDateTime start, LocalDateTime end) {
-    index++;
+    index++; // skip "repeats"
     String weekdaysStr = tokens[index++];
     Set<DayOfWeek> recurrenceDays = parseWeekdays(weekdaysStr);
     Integer occCount = null;
@@ -123,11 +112,18 @@ public class CreateCommandParser implements ICommandParser {
       } else if (tokens[index].equalsIgnoreCase("until")) {
         index++;
         String untilStr = tokens[index++];
-        recurrenceEndDate = LocalDate.parse(untilStr, DATE_FORMAT);
+        // Try to parse as date-time first; if that fails, parse as date.
+        LocalDateTime untilDT;
+        try {
+          untilDT = LocalDateTime.parse(untilStr, DATE_TIME_FORMAT);
+        } catch (Exception e) {
+          untilDT = LocalDate.parse(untilStr, DATE_FORMAT).atStartOfDay();
+        }
+        recurrenceEndDate = untilDT.toLocalDate();
       }
     }
     boolean isPublic = isABoolean(tokens, index);
-    return new CreateRecurringEventCommand(calendar, autoDecline, subject, start, end, "", "",
+    return new CreateRecurringEventCommand(service, autoDecline, subject, start, end, "", "",
         isPublic, recurrenceDays, occCount == null ? -1 : occCount, recurrenceEndDate);
   }
 
@@ -157,7 +153,7 @@ public class CreateCommandParser implements ICommandParser {
           days.add(DayOfWeek.SUNDAY);
           break;
         default:
-          days.add(DayOfWeek.MONDAY);
+          throw new IllegalArgumentException("Invalid weekday character: " + ch);
       }
     }
     return days;

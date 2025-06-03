@@ -12,6 +12,7 @@ public abstract class AbstractEvent implements Event {
   protected String description;
   protected String location;
   protected boolean isPublic;
+  protected boolean autoDecline;
 
   /**
    * Constructs an AbstractEvent with the specified details.
@@ -29,6 +30,7 @@ public abstract class AbstractEvent implements Event {
     this.description = description;
     this.location = location;
     this.isPublic = isPublic;
+    this.autoDecline = false;
   }
 
   /**
@@ -79,6 +81,15 @@ public abstract class AbstractEvent implements Event {
   @Override
   public boolean isPublic() {
     return isPublic;
+  }
+
+  @Override
+  public boolean isAutoDecline() {
+    return autoDecline;
+  }
+
+  public void setAutoDecline(boolean autoDecline) {
+    this.autoDecline = autoDecline;
   }
 
   /**

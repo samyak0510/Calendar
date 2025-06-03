@@ -111,4 +111,24 @@ public class RecurringEvent extends AbstractEvent {
   public List<Event> getOccurrences() {
     return new ArrayList<>(generateOccurrences());
   }
+
+  public LocalDateTime getEndDateTime() {
+    return endDateTime;
+  }
+
+  public Set<DayOfWeek> getRecurrenceDays() {
+    return recurrenceDays;
+  }
+
+  public int getOccurrenceCount() {
+    return occurrenceCount;
+  }
+
+  public LocalDate getRecurrenceEndDate() {
+    return recurrenceEndDate;
+  }
+
+  public void setRecurrenceEndDate(LocalDate newEndDate) {
+    this.recurrenceEndDate = newEndDate;
+  }
 }

@@ -10,20 +10,51 @@ import java.util.List;
 /**
  * A utility class for exporting calendar events to a CSV file.
  */
-public class CSVExporter {
+public class CSVExporter implements Exporter {
 
   /**
-   * Exports the events from the given calendar to a CSV file with the specified file name.
+   * Writes a single event row to the CSV file.
    *
-   * @param calendar the calendar model containing the events
-   * @param fileName the name of the CSV file to create
-   * @return the file path of the created CSV file
-   * @throws IOException if an I/O error occurs during writing
+   * @param se     the SingleEvent instance to write
+   * @param writer the BufferedWriter for the CSV file
+   * @throws IOException if writing fails
    */
-  public static String exportToCSV(CalendarModel calendar, String fileName) throws IOException {
+  private void writeSingleEventRow(SingleEvent se, BufferedWriter writer) throws IOException {
+    LocalDateTime start = se.getStartDateTime();
+    LocalDateTime end = se.getEffectiveEndDateTime();
+    boolean allDay = isAllDayEvent(se);
+    // For the "Private" column, output "true" if event is private (i.e. !isPublic), false otherwise.
+    String privateFlag = se.isPublic() ? "false" : "true";
+
+    StringBuilder row = new StringBuilder();
+    row.append(se.getSubject()).append(",");
+    row.append(start.toLocalDate()).append(",");
+    row.append(start.toLocalTime()).append(",");
+    row.append(end.toLocalDate()).append(",");
+    row.append(end.toLocalTime()).append(",");
+    row.append(allDay).append(",");
+    row.append(se.getDescription()).append(",");
+    row.append(se.getLocation()).append(",");
+    row.append(privateFlag);
+
+    writer.write(row.toString());
+    writer.newLine();
+  }
+
+  private boolean isAllDayEvent(SingleEvent se) {
+    LocalDateTime start = se.getStartDateTime();
+    LocalDateTime end = se.getEffectiveEndDateTime();
+    boolean sameDate = start.toLocalDate().equals(end.toLocalDate());
+    boolean startIsMidnight = (start.toLocalTime().equals(java.time.LocalTime.MIDNIGHT));
+    boolean endIs2359 = (end.toLocalTime().equals(java.time.LocalTime.of(23,59)));
+    return sameDate && startIsMidnight && endIs2359;
+  }
+
+  @Override
+  public String export(ICalendarModel calendar, String fileName) throws IOException {
     String filePath = Paths.get(System.getProperty("user.dir"), fileName).toString();
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-      writer.write("Subject,Start Date,Start Time,End Date,End Time,Description,Location,Public");
+      writer.write("Subject,Start Date,Start Time,End Date,End Time,AllDayEvent,Description,Location,Private");
       writer.newLine();
 
       List<Event> events = calendar.getAllEvents();
@@ -41,30 +72,6 @@ public class CSVExporter {
       }
     }
     return filePath;
-  }
-
-  /**
-   * Writes a single event row to the CSV file.
-   *
-   * @param se     the SingleEvent instance to write
-   * @param writer the BufferedWriter for the CSV file
-   * @throws IOException if writing fails
-   */
-  private static void writeSingleEventRow(SingleEvent se,
-      BufferedWriter writer) throws IOException {
-    StringBuilder row = new StringBuilder();
-    LocalDateTime start = se.getStartDateTime();
-    LocalDateTime end = se.getEffectiveEndDateTime();
-    row.append(se.getSubject()).append(",")
-        .append(start.toLocalDate()).append(",")
-        .append(start.toLocalTime()).append(",")
-        .append(end.toLocalDate()).append(",")
-        .append(end.toLocalTime()).append(",")
-        .append(se.getDescription()).append(",")
-        .append(se.getLocation()).append(",")
-        .append(se.isPublic());
-    writer.write(row.toString());
-    writer.newLine();
   }
 }
 

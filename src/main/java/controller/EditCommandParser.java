@@ -1,30 +1,21 @@
 package controller;
 
-import model.CalendarModel;
 import java.time.LocalDateTime;
+import model.ICalendarService;
 
 /**
  * Parses edit commands and creates commands to update existing events.
  */
 public class EditCommandParser implements ICommandParser {
 
-  private CalendarModel calendar;
+  private ICalendarService service;
 
-  /**
-   * Constructs an EditCommandParser with the specified calendar model.
-   *
-   * @param calendar the calendar model used for editing events
-   */
-  public EditCommandParser(CalendarModel calendar) {
-    this.calendar = calendar;
+
+  public EditCommandParser(ICalendarService service) {
+    this.service = service;
   }
 
-  /**
-   * Parses tokens for an edit command and returns the corresponding Command.
-   *
-   * @param tokens the array of command tokens
-   * @return a Command representing the edit operation
-   */
+
   @Override
   public Command parse(String[] tokens) {
     try {
@@ -61,7 +52,7 @@ public class EditCommandParser implements ICommandParser {
           return () -> "Edit command missing 'with' and new value.";
         }
         String newValue = tokens[withIndex + 1];
-        return new EditEventCommand(calendar, subject, targetTime, property, newValue,
+        return new EditEventCommand(service, subject, targetTime, property, newValue,
             EditEventCommand.EditMode.SINGLE, autoDecline);
       } else if (tokens[1].equalsIgnoreCase("events")) {
         String property = tokens[index++];
@@ -99,7 +90,7 @@ public class EditCommandParser implements ICommandParser {
           }
           newValue = tokens[withIndex + 1];
         }
-        return new EditEventCommand(calendar, subject,
+        return new EditEventCommand(service, subject,
             fromTime, property, newValue, mode, autoDecline);
       } else {
         return () -> "Invalid edit command.";

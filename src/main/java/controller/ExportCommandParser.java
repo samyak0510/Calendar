@@ -1,20 +1,17 @@
 package controller;
 
-import model.CalendarModel;
+
+import model.ICalendarService;
 
 /**
  * Parses export commands and creates the corresponding export command.
  */
 public class ExportCommandParser implements ICommandParser {
-  private CalendarModel calendar;
+  private ICalendarService calendarService;
 
-  /**
-   * Constructs an ExportCommandParser with the specified calendar model.
-   *
-   * @param calendar the calendar model to be used for exporting
-   */
-  public ExportCommandParser(CalendarModel calendar) {
-    this.calendar = calendar;
+
+  public ExportCommandParser(ICalendarService calendarService ) {
+    this.calendarService = calendarService;
   }
 
   /**
@@ -28,7 +25,7 @@ public class ExportCommandParser implements ICommandParser {
     try {
       if (tokens.length >= 3 && tokens[1].equalsIgnoreCase("cal")) {
         String fileName = tokens[2];
-        return new ExportCalendarCommand(calendar, fileName);
+        return new ExportCalendarCommand(calendarService, fileName);
       } else {
         return () -> "Invalid export command.";
       }
