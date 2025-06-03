@@ -6,12 +6,16 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import model.CalendarModel;
+import model.CalendarService;
+import model.ICalendarModel;
+import model.ICalendarService;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Unit tests for the CreateCommandParser class.
+ * JUnit Test Case
  */
+
 public class CreateCommandParserTest {
 
   private CreateCommandParser parser;
@@ -21,8 +25,10 @@ public class CreateCommandParserTest {
    */
   @Before
   public void setUp() {
-    CalendarModel calendar = new CalendarModel();
-    parser = new CreateCommandParser(calendar);
+
+    ICalendarModel calendarModel = new CalendarModel();
+    ICalendarService calendarService = new CalendarService(calendarModel);
+    parser = new CreateCommandParser(calendarService);
   }
 
 
@@ -78,7 +84,6 @@ public class CreateCommandParserTest {
     String result = cmd.execute();
     assertEquals("Expected 'to' after start time.", result);
   }
-
 
   @Test
   public void testTimeBoundRecurringMissingTimesKeyword() throws Exception {
@@ -186,16 +191,13 @@ public class CreateCommandParserTest {
   }
 
   @Test
-  public void testAllDayEventRepeatsInvalidDayString() {
+  public void testAllDayEventRepeatsInvalidDayString() throws Exception {
     String[] tokens = "create event Meeting on 2025-03-02 repeats X for 2 times".split("\\s+");
     Command cmd = parser.parse(tokens);
     assertNotNull(cmd);
-    try {
-      String result = cmd.execute();
-      assertEquals("Recurring event created: Meeting", result);
-    } catch (Exception e) {
-      fail("No exception expected: " + e.getMessage());
-    }
+
+    String result = cmd.execute();
+    assertEquals("Error processing create command: Invalid weekday character: X", result);
+
   }
 }
-

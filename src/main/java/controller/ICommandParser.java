@@ -4,6 +4,7 @@ package controller;
  * Interface for command parsers that convert tokenized input into a Command.
  */
 public interface ICommandParser {
+
   /**
    * Parses the given tokens and returns the corresponding Command.
    *

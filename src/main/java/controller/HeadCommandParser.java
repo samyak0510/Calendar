@@ -1,8 +1,8 @@
 package controller;
 
-import model.ICalendarService;
 import java.util.HashMap;
 import java.util.Map;
+import model.ICalendarService;
 
 /**
  * Parses command line input and creates the corresponding Command objects.
@@ -11,7 +11,11 @@ public class HeadCommandParser implements IHeadCommandParser {
 
   private Map<String, ICommandParser> parserMap;
 
-
+  /**
+   * Constructs a parser with a calendar service and initializes core command parsers.
+   *
+   * @param service The service managing the calendar
+   */
   public HeadCommandParser(ICalendarService service) {
     parserMap = new HashMap<>();
     parserMap.put("create", new CreateCommandParser(service));
@@ -22,17 +26,17 @@ public class HeadCommandParser implements IHeadCommandParser {
   }
 
   /**
-   * Parses the provided command line string into a Command.
+   * Parses the provided command line string into a Command. Supports basic commands like create,
+   * edit, and export, plus an exit command.
    *
-   * @param commandLine the input command string
-   * @return a Command object corresponding to the input, or null if the input is empty
+   * @param commandLine The input command string to parse
+   * @return A Command object corresponding to the input, or null if empty
    */
   @Override
   public Command parse(String commandLine) {
     if (commandLine == null || commandLine.trim().isEmpty()) {
       return null;
     }
-
     String[] tokens = commandLine.trim().split("\\s+");
     String cmdType = tokens[0].toLowerCase();
     if (cmdType.equals("exit")) {

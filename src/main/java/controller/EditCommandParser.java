@@ -10,20 +10,29 @@ public class EditCommandParser implements ICommandParser {
 
   private ICalendarService service;
 
-
+  /**
+   * Constructs a parser with the given calendar service.
+   *
+   * @param service The service managing calendar events
+   */
   public EditCommandParser(ICalendarService service) {
     this.service = service;
   }
 
-
+  /**
+   * Parses command tokens into an event editing Command.
+   *
+   * @param tokens The array of strings from the command input
+   * @return A Command object for editing events, or an error command if parsing fails
+   */
   @Override
   public Command parse(String[] tokens) {
     try {
       int index = 1;
-      if (!(tokens[index].equalsIgnoreCase("event") || tokens[index].equalsIgnoreCase("events"))) {
+      if (!(tokens[index].equalsIgnoreCase("event")
+          || tokens[index].equalsIgnoreCase("events"))) {
         return () -> "Invalid edit command.";
       }
-
       String type = tokens[index];
       index++;
       boolean autoDecline = false;
@@ -31,7 +40,6 @@ public class EditCommandParser implements ICommandParser {
         autoDecline = true;
         index++;
       }
-
       if (type.equalsIgnoreCase("event")) {
         String property = tokens[index++];
         String subject = tokens[index++];

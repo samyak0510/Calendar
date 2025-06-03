@@ -1,6 +1,6 @@
 # Virtual Calendar Application
-> **New in v0.5:** MVC redesign — cleaner service layer, SOLID-compliant controllers.
-> **Full notes →** [`docs/v0.5-design-notes.md`](docs/v0.5-design-notes.md)
+> **New in Sprint 2:** MVC redesign - cleaner service layer, SOLID-compliant controllers.
+> **Full notes →** [`docs/Sprint2.md`](docs/Sprint2.md)
 
 ## Overview
 
@@ -126,32 +126,6 @@ cd src/main/java
 ```
 
 This runs through all major functionalities and generates a `calendar.csv` export file.
-
-## Command Examples
-
-### Creating Events
-```
-create-event "Team Meeting" "2024-01-15" "10:00" "11:00" "Conference Room A" "Weekly team sync"
-create-recurring-event "Workout" "2024-01-01" "07:00" "08:00" "Gym" "Morning exercise" "Mon,Wed,Fri" 12
-```
-
-### Querying Calendar
-```
-print-events "2024-01-15"
-print-events "2024-01-01" "2024-01-31"
-is-busy "2024-01-15" "10:30"
-```
-
-### Editing Events
-```
-edit-event "Team Meeting" "2024-01-15" "10:00" SINGLE subject "Project Review"
-edit-event "Workout" "2024-01-01" "07:00" ALL time "06:00" "07:00"
-```
-
-### Export Calendar
-```
-export-calendar "my_calendar.csv"
-```
 
 ## Advanced Features
 

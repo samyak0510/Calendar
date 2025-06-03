@@ -1,12 +1,11 @@
 package controller;
 
-import model.CalendarModel;
-import model.ICalendarService;
-import model.SingleEvent;
 import java.time.LocalDateTime;
+import model.ICalendarService;
 
 /**
- * Creates a single event in the calendar.
+ * Creates a single event in the calendar and implements the Command pattern to encapsulate event
+ * creation logic.
  */
 public class CreateEventCommand implements Command {
 
@@ -19,7 +18,18 @@ public class CreateEventCommand implements Command {
   private String location;
   private boolean isPublic;
 
-
+  /**
+   * Constructs a command to create a single event with all necessary details.
+   *
+   * @param service     The calendar service to manage the event
+   * @param autoDecline Whether to automatically decline conflicting events
+   * @param subject     The title or name of the event
+   * @param start       The start date and time of the event
+   * @param end         The end date and time of the event
+   * @param description A brief description of the event
+   * @param location    The location where the event will take place
+   * @param isPublic    Whether the event is visible to others
+   */
   public CreateEventCommand(ICalendarService service, boolean autoDecline, String subject,
       LocalDateTime start, LocalDateTime end, String description,
       String location, boolean isPublic) {
@@ -36,12 +46,12 @@ public class CreateEventCommand implements Command {
   /**
    * Executes the event creation by adding a new single event to the calendar.
    *
-   * @return a message indicating the event was created
+   * @return A message indicating the event was created successfully
    * @throws Exception if an error occurs during event creation
    */
   @Override
   public String execute() throws Exception {
-    service.addSingleEvent(subject, start, end, description, location, isPublic,autoDecline);
+    service.addSingleEvent(subject, start, end, description, location, isPublic, autoDecline);
     return "Event created: " + subject;
   }
 }

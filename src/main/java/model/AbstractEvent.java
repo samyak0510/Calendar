@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
  */
 public abstract class AbstractEvent implements Event {
 
+  protected LocalDateTime endDateTime;
+
   protected String subject;
   protected LocalDateTime startDateTime;
   protected String description;
@@ -44,6 +46,15 @@ public abstract class AbstractEvent implements Event {
   }
 
   /**
+   * Updates the subject of the event.
+   *
+   * @param newSubject the new subject
+   */
+  public void setSubject(String newSubject) {
+    this.subject = newSubject;
+  }
+
+  /**
    * Returns the start date and time of the event.
    *
    * @return the start date and time
@@ -51,6 +62,15 @@ public abstract class AbstractEvent implements Event {
   @Override
   public LocalDateTime getStartDateTime() {
     return startDateTime;
+  }
+
+  /**
+   * Updates the start date and time of the event.
+   *
+   * @param newStartDateTime the new start date and time
+   */
+  public void setStartDateTime(LocalDateTime newStartDateTime) {
+    this.startDateTime = newStartDateTime;
   }
 
   /**
@@ -64,6 +84,15 @@ public abstract class AbstractEvent implements Event {
   }
 
   /**
+   * Updates the description of the event.
+   *
+   * @param newDescription the new description
+   */
+  public void setDescription(String newDescription) {
+    this.description = newDescription;
+  }
+
+  /**
    * Returns the location of the event.
    *
    * @return the event location
@@ -71,43 +100,6 @@ public abstract class AbstractEvent implements Event {
   @Override
   public String getLocation() {
     return location;
-  }
-
-  /**
-   * Indicates whether the event is public.
-   *
-   * @return true if the event is public, false otherwise
-   */
-  @Override
-  public boolean isPublic() {
-    return isPublic;
-  }
-
-  @Override
-  public boolean isAutoDecline() {
-    return autoDecline;
-  }
-
-  public void setAutoDecline(boolean autoDecline) {
-    this.autoDecline = autoDecline;
-  }
-
-  /**
-   * Updates the subject of the event.
-   *
-   * @param newSubject the new subject
-   */
-  public void setSubject(String newSubject) {
-    this.subject = newSubject;
-  }
-
-  /**
-   * Updates the description of the event.
-   *
-   * @param newDescription the new description
-   */
-  public void setDescription(String newDescription) {
-    this.description = newDescription;
   }
 
   /**
@@ -120,12 +112,13 @@ public abstract class AbstractEvent implements Event {
   }
 
   /**
-   * Updates the start date and time of the event.
+   * Indicates whether the event is public.
    *
-   * @param newStartDateTime the new start date and time
+   * @return true if the event is public, false otherwise
    */
-  public void setStartDateTime(LocalDateTime newStartDateTime) {
-    this.startDateTime = newStartDateTime;
+  @Override
+  public boolean isPublic() {
+    return isPublic;
   }
 
   /**
@@ -135,5 +128,29 @@ public abstract class AbstractEvent implements Event {
    */
   public void setPublic(boolean newPublic) {
     this.isPublic = newPublic;
+  }
+
+  @Override
+  public boolean isAutoDecline() {
+    return autoDecline;
+  }
+
+  public void setAutoDecline(boolean autoDecline) {
+    this.autoDecline = autoDecline;
+  }
+
+  @Override
+  public LocalDateTime getEffectiveEndDateTime() {
+    if (endDateTime == null) {
+      return startDateTime.toLocalDate().atTime(23, 59);
+    }
+    return endDateTime;
+  }
+
+  public void setEndDateTime(LocalDateTime newEndDateTime) throws InvalidDateException {
+    if (newEndDateTime != null && newEndDateTime.isBefore(this.startDateTime)) {
+      throw new InvalidDateException("End date & time must be after start date & time.");
+    }
+    this.endDateTime = newEndDateTime;
   }
 }

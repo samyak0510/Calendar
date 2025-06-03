@@ -1,8 +1,7 @@
 package controller;
 
-import model.ICalendarService;
-
 import java.time.LocalDateTime;
+import model.ICalendarService;
 
 /**
  * Command to print events within a specified date-time range.
@@ -13,8 +12,15 @@ public class PrintEventsRangeCommand implements Command {
   private LocalDateTime start;
   private LocalDateTime end;
 
-
-  public PrintEventsRangeCommand(ICalendarService calendarService, String startDTStr, String endDTStr) {
+  /**
+   * Constructs a command to print events between two date-times.
+   *
+   * @param calendarService The service managing calendar events
+   * @param startDTStr      The start date-time string to parse
+   * @param endDTStr        The end date-time string to parse
+   */
+  public PrintEventsRangeCommand(ICalendarService calendarService,
+      String startDTStr, String endDTStr) {
     try {
       this.calendarService = calendarService;
       this.start = CommandParserStatic.parseDateTimeStatic(startDTStr);
@@ -25,13 +31,13 @@ public class PrintEventsRangeCommand implements Command {
   }
 
   /**
-   * Executes the command by retrieving events within the specified range and formatting them.
+   * Executes the command by retrieving events within the range and formatting them.
    *
-   * @return a formatted string of events within the given range
+   * @return A formatted string of events within the specified range
+   * @throws Exception if an error occurs during execution
    */
   @Override
   public String execute() throws Exception {
-
-    return calendarService.printEventsRange(start,end);
+    return calendarService.printEventsRange(start, end);
   }
 }

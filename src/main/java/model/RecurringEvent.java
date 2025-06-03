@@ -12,7 +12,6 @@ import java.util.Set;
  */
 public class RecurringEvent extends AbstractEvent {
 
-  private LocalDateTime endDateTime;
   private Set<DayOfWeek> recurrenceDays;
   private int occurrenceCount = -1;
   private LocalDate recurrenceEndDate;
@@ -112,9 +111,6 @@ public class RecurringEvent extends AbstractEvent {
     return new ArrayList<>(generateOccurrences());
   }
 
-  public LocalDateTime getEndDateTime() {
-    return endDateTime;
-  }
 
   public Set<DayOfWeek> getRecurrenceDays() {
     return recurrenceDays;
@@ -131,4 +127,6 @@ public class RecurringEvent extends AbstractEvent {
   public void setRecurrenceEndDate(LocalDate newEndDate) {
     this.recurrenceEndDate = newEndDate;
   }
+
+
 }
