@@ -56,5 +56,7 @@ public interface Event {
    * @return a list of occurrences
    */
   List<Event> getOccurrences();
+
+  boolean isAutoDecline();
 }
 

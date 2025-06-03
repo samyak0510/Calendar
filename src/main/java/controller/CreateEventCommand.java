@@ -1,6 +1,7 @@
 package controller;
 
 import model.CalendarModel;
+import model.ICalendarService;
 import model.SingleEvent;
 import java.time.LocalDateTime;
 
@@ -8,7 +9,8 @@ import java.time.LocalDateTime;
  * Creates a single event in the calendar.
  */
 public class CreateEventCommand implements Command {
-  private CalendarModel calendar;
+
+  private ICalendarService service;
   private boolean autoDecline;
   private String subject;
   private LocalDateTime start;
@@ -17,22 +19,11 @@ public class CreateEventCommand implements Command {
   private String location;
   private boolean isPublic;
 
-  /**
-   * Constructs a CreateEventCommand with the specified details.
-   *
-   * @param calendar    the calendar model where the event will be added
-   * @param autoDecline flag to automatically decline conflicting events
-   * @param subject     the subject of the event
-   * @param start       the start date and time of the event
-   * @param end         the end date and time of the event
-   * @param description the description of the event
-   * @param location    the location of the event
-   * @param isPublic    whether the event is public or private
-   */
-  public CreateEventCommand(CalendarModel calendar, boolean autoDecline, String subject,
-                            LocalDateTime start, LocalDateTime end, String description,
-                            String location, boolean isPublic) {
-    this.calendar = calendar;
+
+  public CreateEventCommand(ICalendarService service, boolean autoDecline, String subject,
+      LocalDateTime start, LocalDateTime end, String description,
+      String location, boolean isPublic) {
+    this.service = service;
     this.autoDecline = autoDecline;
     this.subject = subject;
     this.start = start;
@@ -50,8 +41,7 @@ public class CreateEventCommand implements Command {
    */
   @Override
   public String execute() throws Exception {
-    SingleEvent event = new SingleEvent(subject, start, end, description, location, isPublic);
-    calendar.addEvent(event, autoDecline);
+    service.addSingleEvent(subject, start, end, description, location, isPublic,autoDecline);
     return "Event created: " + subject;
   }
 }

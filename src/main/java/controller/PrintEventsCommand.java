@@ -1,26 +1,19 @@
 package controller;
 
-import model.CalendarModel;
-import model.Event;
 import java.time.LocalDate;
-import java.util.List;
+import model.ICalendarService;
 
 /**
  * Command to print events for a specific date.
  */
 public class PrintEventsCommand implements Command {
 
-  private CalendarModel calendar;
+  private ICalendarService calendarService;
   private LocalDate date;
 
-  /**
-   * Constructs a PrintEventsCommand for the given date.
-   *
-   * @param calendar the calendar model containing the events
-   * @param date     the date for which to print events
-   */
-  public PrintEventsCommand(CalendarModel calendar, LocalDate date) {
-    this.calendar = calendar;
+
+  public PrintEventsCommand(ICalendarService service, LocalDate date) {
+    this.calendarService = service;
     this.date = date;
   }
 
@@ -30,14 +23,8 @@ public class PrintEventsCommand implements Command {
    * @return a formatted string of events on the given date
    */
   @Override
-  public String execute() {
-    List<Event> events = calendar.getEventsOn(date);
-    StringBuilder sb = new StringBuilder();
-    sb.append("Events on ").append(date).append(":\n");
-    for (Event event : events) {
-      sb.append("- ").append(event.getSubject())
-              .append(" at ").append(event.getStartDateTime()).append("\n");
-    }
-    return sb.toString();
+  public String execute() throws Exception {
+
+    return calendarService.printEventsOn(date);
   }
 }

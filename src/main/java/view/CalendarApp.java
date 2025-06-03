@@ -1,10 +1,14 @@
 package view;
 
 import controller.CalendarController;
-import model.CalendarModel;
+import controller.ICalendarController;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import model.CalendarModel;
+import model.CalendarService;
+import model.ICalendarModel;
+import model.ICalendarService;
 
 /**
  * The main application class for the Calendar App.
@@ -24,8 +28,13 @@ public class CalendarApp {
       return;
     }
     String mode = args[1].toLowerCase();
-    CalendarModel calendar = new CalendarModel();
-    CalendarController controller = new CalendarController(calendar);
+
+    ICalendarModel calendarModel = new CalendarModel();
+    // Instantiate the service, which internally uses CSVExporter.
+    ICalendarService service = new CalendarService(calendarModel);
+
+    ICalendarController controller = new CalendarController(service);
+
     if (mode.equals("interactive")) {
       runInteractive(controller);
     } else if (mode.equals("headless")) {
@@ -44,7 +53,7 @@ public class CalendarApp {
    *
    * @param controller the CalendarController instance to process commands
    */
-  private static void runInteractive(CalendarController controller) {
+  private static void runInteractive(ICalendarController controller) {
     Scanner scanner = new Scanner(System.in);
     System.out.println("Interactive Calendar App. Type 'exit' to quit.");
     while (true) {
@@ -65,7 +74,7 @@ public class CalendarApp {
    * @param controller the CalendarController instance to process commands
    * @param fileName   the name of the command file
    */
-  private static void runHeadless(CalendarController controller, String fileName) {
+  private static void runHeadless(ICalendarController controller, String fileName) {
     try (Scanner scanner = new Scanner(new File(fileName))) {
       while (scanner.hasNextLine()) {
         String line = scanner.nextLine();

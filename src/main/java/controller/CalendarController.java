@@ -1,21 +1,19 @@
 package controller;
 
-import model.CalendarModel;
+import model.ICalendarService;
 
 /**
  * Controls the interaction between the calendar model and command parsing.
  */
-public class CalendarController {
+public class CalendarController implements ICalendarController {
 
-  private CommandParser parser;
+  private ICalendarService service;
+  private IHeadCommandParser parser;
 
-  /**
-   * Creates a new CalendarController.
-   *
-   * @param calendar the calendar model instance
-   */
-  public CalendarController(CalendarModel calendar) {
-    this.parser = new CommandParser(calendar);
+
+  public CalendarController(ICalendarService service) {
+    this.service = service;
+    this.parser = new HeadCommandParser(this.service);
   }
 
   /**

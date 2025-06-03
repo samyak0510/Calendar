@@ -1,4 +1,6 @@
 # Virtual Calendar Application
+> **New in v0.5:** MVC redesign — cleaner service layer, SOLID-compliant controllers.
+> **Full notes →** [`docs/v0.5-design-notes.md`](docs/v0.5-design-notes.md)
 
 ## Overview
 

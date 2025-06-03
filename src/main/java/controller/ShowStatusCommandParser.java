@@ -2,21 +2,18 @@ package controller;
 
 import model.CalendarModel;
 import java.time.LocalDateTime;
+import model.ICalendarService;
 
 /**
  * Parses commands to display the current status (availability) of the calendar.
  */
 public class ShowStatusCommandParser implements ICommandParser {
 
-  private CalendarModel calendar;
+  private ICalendarService service;
 
-  /**
-   * Constructs a ShowStatusCommandParser with the specified calendar model.
-   *
-   * @param calendar the calendar model to check status on
-   */
-  public ShowStatusCommandParser(CalendarModel calendar) {
-    this.calendar = calendar;
+
+  public ShowStatusCommandParser(ICalendarService service) {
+    this.service = service;
   }
 
   /**
@@ -32,7 +29,7 @@ public class ShowStatusCommandParser implements ICommandParser {
           && tokens[2].equalsIgnoreCase("on")) {
         String dateTimeStr = tokens[3];
         LocalDateTime dateTime = CommandParserStatic.parseDateTimeStatic(dateTimeStr);
-        return new ShowStatusCommand(calendar, dateTime);
+        return new ShowStatusCommand(service, dateTime);
       } else {
         return () -> "Invalid show command.";
       }

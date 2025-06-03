@@ -1,24 +1,19 @@
 package controller;
 
-import model.CalendarModel;
 import java.io.IOException;
-import model.CSVExporter;
+import model.ICalendarService;
+
 
 /**
  * Exports the calendar data to a CSV file.
  */
 public class ExportCalendarCommand implements Command {
-  private CalendarModel calendar;
+  private ICalendarService calendarService;
   private String fileName;
 
-  /**
-   * Constructs an ExportCalendarCommand.
-   *
-   * @param calendar the calendar model to export
-   * @param fileName the name of the CSV file to create
-   */
-  public ExportCalendarCommand(CalendarModel calendar, String fileName) {
-    this.calendar = calendar;
+
+  public ExportCalendarCommand(ICalendarService calendarService, String fileName) {
+    this.calendarService = calendarService;
     this.fileName = fileName;
   }
 
@@ -31,7 +26,7 @@ public class ExportCalendarCommand implements Command {
   @Override
   public String execute() throws Exception {
     try {
-      String path = CSVExporter.exportToCSV(calendar, fileName);
+      String path = calendarService.exporttoCSV("csv", fileName);
       return "Calendar exported to: " + path;
     } catch (IOException e) {
       return "Export failed: " + e.getMessage();
