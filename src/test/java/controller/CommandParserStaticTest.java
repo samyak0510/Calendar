@@ -2,20 +2,12 @@ package controller;
 
 import static org.junit.Assert.assertEquals;
 
-import model.InvalidDateException;
 import java.time.LocalDateTime;
+import model.InvalidDateException;
 import org.junit.Test;
 
-/**
- * Unit tests for the CommandParserStatic class.
- */
 public class CommandParserStaticTest {
 
-  /**
-   * Tests that parseDateTimeStatic correctly parses a valid date-time string.
-   *
-   * @throws InvalidDateException if the input string is invalid
-   */
   @Test
   public void testParseDateTimeStatic() throws InvalidDateException {
     String input = "2025-03-01T09:00";
@@ -26,4 +18,5 @@ public class CommandParserStaticTest {
     assertEquals(9, dateTime.getHour());
     assertEquals(0, dateTime.getMinute());
   }
+
 }

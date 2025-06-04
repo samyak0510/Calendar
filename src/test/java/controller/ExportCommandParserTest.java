@@ -5,12 +5,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import model.CalendarModel;
+import model.CalendarService;
+import model.ICalendarService;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Unit tests for the ExportCommandParser class.
+ * JUnit Test Case
  */
+
 public class ExportCommandParserTest {
 
   private ExportCommandParser parser;
@@ -20,7 +23,8 @@ public class ExportCommandParserTest {
    */
   @Before
   public void setUp() {
-    CalendarModel calendar = new CalendarModel();
+    CalendarModel calendara = new CalendarModel();
+    ICalendarService calendar = new CalendarService(calendara);
     parser = new ExportCommandParser(calendar);
   }
 

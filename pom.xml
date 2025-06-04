@@ -5,12 +5,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.example</groupId>
-  <artifactId>Assignment4</artifactId>
+  <artifactId>Assignment5</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <properties>
-    <maven.compiler.source>18</maven.compiler.source>
-    <maven.compiler.target>18</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
@@ -21,12 +21,19 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>RELEASE</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>RELEASE</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
+
   <build>
 
     <plugins>
@@ -41,7 +48,8 @@
           </targetClasses>
           <targetTests>
             <param>model.*</param>
-            <param>controller.*</param>          </targetTests>
+            <param>controller.*</param>
+          </targetTests>
         </configuration>
       </plugin>
     </plugins>

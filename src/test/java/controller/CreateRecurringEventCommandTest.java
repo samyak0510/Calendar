@@ -7,15 +7,20 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import model.CalendarModel;
+import model.CalendarService;
+import model.ICalendarService;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Unit tests for creating recurring event commands.
+ * JUnit Test Case
  */
+
 public class CreateRecurringEventCommandTest {
+
   private CalendarModel calendar;
   private CreateCommandParser parser;
+  private ICalendarService calendarService;
 
   /**
    * Sets up the test fixture before each test.
@@ -23,13 +28,13 @@ public class CreateRecurringEventCommandTest {
   @Before
   public void setUp() {
     calendar = new CalendarModel();
-    parser = new CreateCommandParser(calendar);
+    calendarService = new CalendarService(calendar);
+    parser = new CreateCommandParser(calendarService);
   }
 
   /**
-   * Tests that a valid recurring event command is added to the calendar.
-   * The test verifies that the returned message is
-   * correct and that the event is present in the calendar.
+   * Tests that a valid recurring event command is added to the calendar. The test verifies that the
+   * returned message is correct and that the event is present in the calendar.
    */
   @Test
   public void testRecurringEventIsAddedToCalendar() {
@@ -46,10 +51,11 @@ public class CreateRecurringEventCommandTest {
       assertFalse(calendar.getAllEvents().isEmpty());
 
       boolean found = calendar.getAllEvents().stream()
-              .anyMatch(e -> e.getSubject().equals("Standup"));
+          .anyMatch(e -> e.getSubject().equals("Standup"));
       assertTrue(found);
     } catch (Exception e) {
       fail("Unexpected exception: " + e.getMessage());
     }
   }
+
 }

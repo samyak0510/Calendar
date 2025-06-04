@@ -12,7 +12,6 @@ public class CalendarModel implements ICalendarModel {
 
   private List<Event> events;
 
-
   /**
    * Constructs a new CalendarModel with an empty list of events.
    */
@@ -21,12 +20,11 @@ public class CalendarModel implements ICalendarModel {
   }
 
   /**
-   * Adds an event to the calendar. If a conflict is found and autoDecline is true, an exception is
-   * thrown.
+   * Adds an event to the calendar, checking for conflicts if auto-decline is enabled.
    *
-   * @param event       the event to add
-   * @param autoDecline if true, conflicts cause the event to be declined
-   * @throws EventConflictException if the event conflicts with an existing event
+   * @param event       The event to add
+   * @param autoDecline Whether to check for and reject conflicts
+   * @throws EventConflictException If a conflict is detected and auto-decline is true
    */
   @Override
   public void addEvent(Event event, boolean autoDecline) throws EventConflictException {
@@ -36,13 +34,17 @@ public class CalendarModel implements ICalendarModel {
           throw new EventConflictException("Event '" + event.getSubject() +
               "' conflicts with existing event '" + existingEvent.getSubject() + "'.");
         }
-
       }
     }
     events.add(event);
   }
 
-
+  /**
+   * Gets all events occurring on a specific date.
+   *
+   * @param date The date to check for events
+   * @return A list of events on the given date
+   */
   @Override
   public List<Event> getEventsOn(LocalDate date) {
     List<Event> result = new ArrayList<>();
@@ -54,13 +56,12 @@ public class CalendarModel implements ICalendarModel {
     return result;
   }
 
-
   /**
    * Checks if an event occurs on a given date.
    *
-   * @param event the event to check
-   * @param date  the date to verify
-   * @return true if the event occurs on the specified date, false otherwise
+   * @param event The event to check
+   * @param date  The date to verify
+   * @return True if the event occurs on the specified date, false otherwise
    */
   private boolean occursOnDate(Event event, LocalDate date) {
     for (Event occurrence : event.getOccurrences()) {
@@ -74,19 +75,25 @@ public class CalendarModel implements ICalendarModel {
   /**
    * Returns all events in the calendar.
    *
-   * @return a list of all events
+   * @return A list of all events
    */
   @Override
   public List<Event> getAllEvents() {
     return new ArrayList<>(events);
   }
 
+  /**
+   * Checks if the calendar is busy at a specific date-time.
+   *
+   * @param dateTime The date-time to check
+   * @return True if an event overlaps the given time, false otherwise
+   */
   @Override
   public boolean isBusyAt(LocalDateTime dateTime) {
     for (Event event : events) {
       for (Event occurrence : event.getOccurrences()) {
         if (occurrence instanceof SingleEvent) {
-          SingleEvent se = (SingleEvent) occurrence;
+          Event se = occurrence;
           if (se.getStartDateTime().isBefore(dateTime) && se.getEffectiveEndDateTime()
               .isAfter(dateTime)) {
             return true;
@@ -96,8 +103,4 @@ public class CalendarModel implements ICalendarModel {
     }
     return false;
   }
-
-
-
 }
-

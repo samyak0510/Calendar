@@ -1,6 +1,5 @@
 package controller;
 
-import model.CalendarModel;
 import java.time.LocalDateTime;
 import model.ICalendarService;
 
@@ -11,16 +10,20 @@ public class ShowStatusCommandParser implements ICommandParser {
 
   private ICalendarService service;
 
-
+  /**
+   * Constructs a parser with the given calendar service.
+   *
+   * @param service The service managing calendar events
+   */
   public ShowStatusCommandParser(ICalendarService service) {
     this.service = service;
   }
 
   /**
-   * Parses the provided tokens to create a ShowStatusCommand.
+   * Parses tokens to create a ShowStatusCommand.
    *
-   * @param tokens the command tokens
-   * @return a Command representing the status check operation
+   * @param tokens The array of command tokens
+   * @return A Command for checking status
    */
   @Override
   public Command parse(String[] tokens) {

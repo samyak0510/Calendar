@@ -1,23 +1,61 @@
 package controller;
 
-import model.ICalendarService;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
+import model.ICalendarService;
 
+/**
+ * Parses command tokens to create event creation commands. Supports both single and recurring event
+ * creation with various options.
+ */
 public class CreateCommandParser implements ICommandParser {
 
+  private static final DateTimeFormatter DATE_FORMAT =
+      DateTimeFormatter.ofPattern("yyyy-MM-dd");
+  private static final DateTimeFormatter DATE_TIME_FORMAT =
+      DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
   private ICalendarService service;
-  private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-  private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
+  /**
+   * Constructs a parser with the given calendar service.
+   *
+   * @param service The calendar service for managing events
+   */
   public CreateCommandParser(ICalendarService service) {
     this.service = service;
   }
 
+  /**
+   * Checks if the token at the given index specifies event visibility.
+   *
+   * @param tokens The array of command tokens
+   * @param index  The current position in the token array
+   * @return True if the event should be public, false if private
+   */
+  private static boolean isABoolean(String[] tokens, int index) {
+    boolean isPublic = true;
+    if (index < tokens.length) {
+      String pubToken = tokens[index];
+      if (pubToken.equalsIgnoreCase("public")) {
+        isPublic = true;
+      } else if (pubToken.equalsIgnoreCase("private")) {
+        isPublic = false;
+      }
+      index++;
+    }
+    return isPublic;
+  }
+
+  /**
+   * Parses command tokens into a Command object for event creation.
+   *
+   * @param tokens The array of strings from the command input
+   * @return A Command object or error
+   */
   @Override
   public Command parse(String[] tokens) {
     try {
@@ -55,9 +93,8 @@ public class CreateCommandParser implements ICommandParser {
         LocalDateTime start;
         LocalDateTime end;
         if (dateStr.contains("T")) {
-          // If a date-time string is provided for an all-day event, ignore the time part.
           LocalDateTime dt = LocalDateTime.parse(dateStr, DATE_TIME_FORMAT);
-          start = dt.toLocalDate().atStartOfDay();
+          start = dt;
           end = dt.toLocalDate().atTime(23, 59);
         } else {
           LocalDate date = LocalDate.parse(dateStr, DATE_FORMAT);
@@ -79,23 +116,21 @@ public class CreateCommandParser implements ICommandParser {
     }
   }
 
-  private static boolean isABoolean(String[] tokens, int index) {
-    boolean isPublic = true;
-    if (index < tokens.length) {
-      String pubToken = tokens[index];
-      if (pubToken.equalsIgnoreCase("public")) {
-        isPublic = true;
-      } else if (pubToken.equalsIgnoreCase("private")) {
-        isPublic = false;
-      }
-      index++;
-    }
-    return isPublic;
-  }
-
-  private Command getRecurringCommand(String[] tokens, boolean autoDecline, int index, String subject,
+  /**
+   * Creates a recurring event command based on additional recurrence parameters.
+   *
+   * @param tokens      The full array of command tokens
+   * @param autoDecline Whether to auto-decline conflicting events
+   * @param index       The current position in the token array
+   * @param subject     The event subject
+   * @param start       The event start time
+   * @param end         The event end time
+   * @return A Command object for creating a recurring event
+   */
+  private Command getRecurringCommand(String[] tokens, boolean autoDecline, int index,
+      String subject,
       LocalDateTime start, LocalDateTime end) {
-    index++; // skip "repeats"
+    index++;
     String weekdaysStr = tokens[index++];
     Set<DayOfWeek> recurrenceDays = parseWeekdays(weekdaysStr);
     Integer occCount = null;
@@ -112,7 +147,6 @@ public class CreateCommandParser implements ICommandParser {
       } else if (tokens[index].equalsIgnoreCase("until")) {
         index++;
         String untilStr = tokens[index++];
-        // Try to parse as date-time first; if that fails, parse as date.
         LocalDateTime untilDT;
         try {
           untilDT = LocalDateTime.parse(untilStr, DATE_TIME_FORMAT);
@@ -123,10 +157,18 @@ public class CreateCommandParser implements ICommandParser {
       }
     }
     boolean isPublic = isABoolean(tokens, index);
-    return new CreateRecurringEventCommand(service, autoDecline, subject, start, end, "", "",
+    return new CreateRecurringEventCommand(service, autoDecline, subject, start,
+        end, "", "",
         isPublic, recurrenceDays, occCount == null ? -1 : occCount, recurrenceEndDate);
   }
 
+  /**
+   * Converts a string of weekday characters into a set of DayOfWeek values.
+   *
+   * @param weekdaysStr A string like "MTWRF" representing weekdays
+   * @return A set of DayOfWeek enums for the specified days
+   * @throws IllegalArgumentException if an invalid weekday character is provided
+   */
   private Set<DayOfWeek> parseWeekdays(String weekdaysStr) {
     Set<DayOfWeek> days = new HashSet<>();
     for (char ch : weekdaysStr.toCharArray()) {

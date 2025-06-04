@@ -1,10 +1,12 @@
 # Virtual Calendar Application
-> **New in v0.5:** MVC redesign — cleaner service layer, SOLID-compliant controllers.
-> **Full notes →** [`docs/v0.5-design-notes.md`](docs/v0.5-design-notes.md)
+> **New in Sprint 3:** Multi-calendar support with timezone management, enhanced event operations, and universal conflict detection.
+> **Full changelog →** [`changelog.md`](changelog.md)
 
 ## Overview
 
 This project implements a comprehensive virtual calendar application that mimics the core features of popular calendar software like Google Calendar and iCalendar. Built using Java with Maven, the application follows MVC (Model-View-Controller) architecture and SOLID design principles to ensure maintainability, scalability, and extensibility.
+
+**Sprint 3 Evolution:** Building upon Assignment 4's foundation, Assignment 5 introduces multi-calendar support with timezone management, enhanced event operations, and improved architectural design. The system now supports multiple calendars with unique names and IANA timezones, event copying between calendars, and automatic timezone migration.
 
 ## Visual Demonstrations
 
@@ -26,11 +28,18 @@ This project implements a comprehensive virtual calendar application that mimics
 
 ## Key Features
 
+### **Multi-Calendar Management**
+- **Calendar Creation**: Create multiple calendars with unique names and IANA timezones
+- **Calendar Selection**: Use `use calendar` command to set active calendar context
+- **Calendar Editing**: Modify calendar properties including name and timezone
+- **Timezone Migration**: Automatic timezone conversion when editing calendar properties
+
 ### **Event Management**
 - **Single Events**: Create events with subject, start/end date-time, location, and description
 - **Recurring Events**: Create repeating events with flexible scheduling options
 - **All-Day Events**: Events with All Day duration
-- **Conflict Detection**: Automatic detection and optional auto-decline of conflicting events
+- **Universal Conflict Detection**: Automatic conflict detection enabled by default for all events
+- **Event Copy Operations**: Copy events between calendars with automatic timezone conversion
 
 ### **Event Editing**
 - **SINGLE Mode**: Modify individual event instances
@@ -40,7 +49,6 @@ This project implements a comprehensive virtual calendar application that mimics
 ### **Query and Search**
 - Print events for specific dates or date ranges
 - Check calendar availability at specific times
-- Advanced filtering and search capabilities
 
 ### **Export and Integration**
 - Export to CSV format compatible with Google Calendar
@@ -51,7 +59,6 @@ This project implements a comprehensive virtual calendar application that mimics
 - **Interactive Mode**: Real-time command input with immediate feedback
 - **Headless Mode**: Batch processing from command files
 - Comprehensive command-line interface with intuitive syntax
-
 
 ## System Architecture
 
@@ -73,12 +80,42 @@ The application follows the MVC pattern with clear separation of concerns:
 ## How to Run the Program
 
 ### Prerequisites
+- Java JDK 8 or later installed on your system
+- Command prompt or terminal
+- JUnit 4 for running tests
 
-- Java JDK 8 or later.
-- JUnit 4 (for running the tests).
+### Running the Application
 
-### Method 1: Using Maven (Recommended)
+The application is now distributed as a compiled JAR file for easy execution:
 
+#### Interactive Mode
+Navigate to the `res/` directory and run:
+```bash
+java -jar Assignment5.jar --mode interactive
+```
+You will then see a prompt where you can type commands directly.
+
+#### Headless Mode
+1. **Using provided demonstration file:**
+   ```bash
+   run headless.bat
+   ```
+   or manually:
+   ```bash
+   java -jar Assignment5.jar --mode headless headless.txt
+   ```
+
+2. **Using custom command file:**
+   Create a text file with one command per line, ensuring the last line is `exit`, then run:
+   ```bash
+   java -jar Assignment5.jar --mode headless your_commands.txt
+   ```
+
+### Development Setup (Optional)
+
+For development and testing purposes:
+
+#### Method 1: Using Maven (Recommended)
 1. **Build the Project:**
    ```bash
    mvn clean compile
@@ -94,71 +131,16 @@ The application follows the MVC pattern with clear separation of concerns:
    mvn exec:java -Dexec.mainClass="view.CalendarApp" -Dexec.args="--mode headless path/to/commands.txt"
    ```
 
-### Method 2: Direct Compilation (Legacy)
-
-1. **Navigate to Source Directory:**
-   ```bash
-   cd src/main/java
-   ```
-
-2. **Compile Using Batch Script:**
-   ```bash
-   compile.bat
-   ```
-
-3. **Run Interactive Mode:**
-   ```bash
-   java view.CalendarApp --mode interactive
-   ```
-
-4. **Run Headless Mode:**
-   ```bash
-   java view.CalendarApp --mode headless comprehensive_test.txt
-   ```
-
-### Quick Demo: Comprehensive Test
-
-Execute the comprehensive test to see all features in action:
-
-```bash
-cd src/main/java
-"Run Comprehensive_Test_Example.bat"
-```
-
-This runs through all major functionalities and generates a `calendar.csv` export file.
-
-## Command Examples
-
-### Creating Events
-```
-create-event "Team Meeting" "2024-01-15" "10:00" "11:00" "Conference Room A" "Weekly team sync"
-create-recurring-event "Workout" "2024-01-01" "07:00" "08:00" "Gym" "Morning exercise" "Mon,Wed,Fri" 12
-```
-
-### Querying Calendar
-```
-print-events "2024-01-15"
-print-events "2024-01-01" "2024-01-31"
-is-busy "2024-01-15" "10:30"
-```
-
-### Editing Events
-```
-edit-event "Team Meeting" "2024-01-15" "10:00" SINGLE subject "Project Review"
-edit-event "Workout" "2024-01-01" "07:00" ALL time "06:00" "07:00"
-```
-
-### Export Calendar
-```
-export-calendar "my_calendar.csv"
-```
-
 ## Advanced Features
 
-### Conflict Management
-- **Auto-decline**: Automatically reject conflicting events when enabled
-- **Manual Resolution**: Interactive conflict resolution in interactive mode
-- **Conflict Visualization**: Clear indication of scheduling conflicts
+### Multi-Calendar Operations
+- **Calendar Context**: All operations are performed within the context of the active calendar
+- **Cross-Calendar Copy**: Copy events between calendars with automatic timezone adjustment
+- **Timezone Awareness**: Events maintain their logical time when copied across timezones
+
+### Enhanced Conflict Management
+- **Universal Auto-decline**: All events now check for conflicts by default
+- **Smart Conflict Resolution**: Improved conflict detection across calendar boundaries
 
 ### Recurring Event Patterns
 - **Weekday Selection**: Choose specific days (Mon, Tue, Wed, etc.)
@@ -185,19 +167,39 @@ mvn test                    # Run all unit tests
 mvn org.pitest:pitest-maven:mutationCoverage  # Run mutation testing
 ```
 
-
-
 ## Features That Work
 
+- **Multi-Calendar Support:**
+  - Create multiple calendars with unique names and IANA timezones
+  - Switch between calendars using `use calendar` command
+  - Edit calendar properties including timezone migration
+
+- **Universal Conflict Detection:**
+  - All events automatically check for conflicts without needing --autoDecline flag
+  - Enhanced conflict resolution across calendar boundaries
+
+- **Event Copy Operations:**
+  - Copy events between calendars with automatic timezone conversion
+  - Maintain event integrity across different timezone contexts
+
 - **Single Event Creation:**  
-  - Creating single events with optional end date/time.
+  - Creating single events with optional end date/time
+  - Default to all-day events (00:00-23:59) when end time not specified
+
 - **Recurring Event Creation:**  
-  - Creating recurring events that repeat on specific weekdays (both for a fixed number of occurrences and until a given end date).
-- **Conflict Detection:**  
-  - Conflicts are checked during event creation. If auto-decline is enabled, the creation is rejected.
+  - Creating recurring events that repeat on specific weekdays
+  - Support for both fixed occurrence count and end date patterns
+
+- **Advanced Event Editing:**  
+  - Enhanced editing with SINGLE, FROM, and ALL modes
+  - Refactored EditEventOperations for better separation of concerns
+  - Global conflict checks ensure edits don't cause overlaps
+
 - **Querying Events:**  
-  - Printing events on a specific date and within a given time range.
-  - Checking busy status at a specific date/time.
+  - Print events on specific dates across active calendar
+  - Print events within date/time ranges
+  - Check calendar availability at specific times
+
 - **Export to CSV:**  
   - The calendar can be exported to a CSV file.
 - **Editing Events:**  
@@ -205,22 +207,13 @@ mvn org.pitest:pitest-maven:mutationCoverage  # Run mutation testing
   - Supports SINGLE, FROM, and ALL modes for editing.
   
 
-# Code Nature
-- **--autoDecline**  
-  - --autoDecline defaults to false if not provided.
-- **private/public property**  
-  - If not provided defaults to public.
-- **Effective Start/End Time**  
-  - If start time is not provided, it defaults to 00:00, which is the start of the day.
-  - If end time is not provided, it defaults to 23:59, which is the end of the day.
-
 ## Resources and Documentation
 
 - **Complete Documentation**: Available in `/docs` folder (Javadoc generated)
-- **Test Commands**: Sample valid/invalid commands in `/res/Valid and Invalid Commands.txt`
+- **Executable JAR**: Ready-to-run application in `/res/Assignment5.jar`
+- **Demo Commands**: Demonstration commands in `/res/headless.txt`
 - **UML Diagrams**: Complete system architecture in `/res/UML Diagram.pdf`
 - **Test Reports**: Mutation testing reports in `/res/pit-reports/`
-
 
 
 ## Acknowledgments

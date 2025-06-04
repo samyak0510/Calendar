@@ -5,14 +5,26 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import model.CalendarModel;
+import model.CalendarService;
+import model.ICalendarService;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Unit tests for the EditCommandParser class.
+ * JUnit Test Case
  */
+
 public class EditCommandParserTest {
+
+  /**
+   * Unit tests for the EditCommandParser class.
+   */
 
   private EditCommandParser parser;
 
@@ -22,7 +34,8 @@ public class EditCommandParserTest {
   @Before
   public void setUp() {
     CalendarModel calendar = new CalendarModel();
-    parser = new EditCommandParser(calendar);
+    ICalendarService calendarService = new CalendarService(calendar);
+    parser = new EditCommandParser(calendarService);
   }
 
   /**
@@ -30,16 +43,26 @@ public class EditCommandParserTest {
    */
   @Test
   public void testEditEventSingleModeValid() {
-    String[] tokens = ("edit event subject Meeting from 2025-03-01T09:00 "
-        + "to 2025-03-01T10:00 with TeamMeeting").split("\\s+");
-    Command cmd = parser.parse(tokens);
-    assertNotNull("Expected a valid command object", cmd);
+    CalendarModel calendar = new CalendarModel();
+    CalendarService service = new CalendarService(calendar);
+    EditCommandParser parsera = new EditCommandParser(service);
+    try {
+      service.addSingleEvent("Meeting",
+          LocalDateTime.of(2025, 3, 1, 9, 0),
+          LocalDateTime.of(2025, 3, 1, 10, 0),
+          "", "", true, false);
+    } catch (Exception e) {
+      fail(e.getMessage());
+    }
+    String[] tokens = ("edit event subject Meeting from 2025-03-01T09:00 to 2025-03-01T10:00 with TeamMeeting").split(
+        "\\s+");
+    Command cmd = parsera.parse(tokens);
+    assertNotNull(cmd);
     try {
       String result = cmd.execute();
-      assertTrue(result.equals("No matching event found to edit.")
-          || result.contains("Edited event(s)"));
+      assertTrue(result.contains("Edited event(s)"));
     } catch (Exception e) {
-      fail("Unexpected exception: " + e.getMessage());
+      fail(e.getMessage());
     }
   }
 
@@ -61,26 +84,65 @@ public class EditCommandParserTest {
    */
   @Test
   public void testEditEventsFromModeValid() throws Exception {
-    String[] tokens = ("edit events location Meeting from 2025-03-01T09:00 "
-        + "with NewLocation").split("\\s+");
-    Command cmd = parser.parse(tokens);
-    assertNotNull("Expected a command object for edit events FROM mode", cmd);
+    CalendarModel calendar = new CalendarModel();
+    CalendarService service = new CalendarService(calendar);
+    EditCommandParser parsera = new EditCommandParser(service);
+
+    Set<DayOfWeek> days = new HashSet<>();
+    days.add(DayOfWeek.SATURDAY);
+    service.addRecurringEvent(
+        "Meeting",
+        LocalDateTime.of(2025, 3, 1, 9, 0),
+        LocalDateTime.of(2025, 3, 1, 10, 0),
+        "desc",
+        "loc",
+        true,
+        days,
+        -1,
+        LocalDate.of(2025, 3, 22),
+        false
+    );
+
+    String[] tokens = ("edit events location Meeting from 2025-03-08T09:00 with NewLocation"
+    ).split("\\s+");
+    Command cmd = parsera.parse(tokens);
+    assertNotNull(cmd);
+
     String result = cmd.execute();
-    assertTrue(result.equals("No matching event found to edit.")
-        || result.contains("Edited event(s)"));
+    assertTrue(result.contains("Edited event(s)"));
   }
+
 
   /**
    * Tests the "edit events" branch in ALL mode.
    */
   @Test
   public void testEditEventsAllModeValid() throws Exception {
+    CalendarModel calendar = new CalendarModel();
+    CalendarService service = new CalendarService(calendar);
+    EditCommandParser parser = new EditCommandParser(service);
+
+    Set<DayOfWeek> days = new HashSet<>();
+    days.add(DayOfWeek.SATURDAY);
+    service.addRecurringEvent(
+        "Meeting",
+        LocalDateTime.of(2025, 3, 1, 9, 0),
+        LocalDateTime.of(2025, 3, 1, 10, 0),
+        "desc",
+        "loc",
+        true,
+        days,
+        3,
+        null,
+        false
+    );
+
     String[] tokens = "edit events description Meeting with NewDescription".split("\\s+");
     Command cmd = parser.parse(tokens);
-    assertNotNull("Expected a command object for edit events ALL mode", cmd);
+    assertNotNull(cmd);
+
     String result = cmd.execute();
-    assertTrue(result.equals("No matching event found to edit.")
-        || result.contains("Edited event(s)"));
+    assertTrue(result.contains("Edited event(s)"));
   }
 
   /**
@@ -162,39 +224,76 @@ public class EditCommandParserTest {
    */
   @Test
   public void testEditEventSingleModeNoAutoDecline() throws Exception {
-    String[] tokens = ("edit event subject Meeting "
-        + "from 2025-03-01T09:00 to 2025-03-01T10:00 with TeamMeeting").split("\\s+");
+    CalendarModel calendar = new CalendarModel();
+    CalendarService service = new CalendarService(calendar);
+    EditCommandParser parser = new EditCommandParser(service);
+
+    service.addSingleEvent("Meeting",
+        LocalDateTime.of(2025, 3, 1, 9, 0),
+        LocalDateTime.of(2025, 3, 1, 10, 0),
+        "", "", true, false);
+
+    String[] tokens = ("edit event subject Meeting from 2025-03-01T09:00 to 2025-03-01T10:00 with TeamMeeting")
+        .split("\\s+");
     Command cmd = parser.parse(tokens);
+    assertNotNull(cmd);
+
     String result = cmd.execute();
-    assertEquals("No matching event found to edit.", result);
+    assertTrue(result.contains("Edited event(s)"));
   }
 
-  /**
-   * Tests valid SINGLE mode command with auto-decline flag.
-   */
+
   @Test
   public void testEditEventSingleModeWithAutoDecline() throws Exception {
+    CalendarModel calendar = new CalendarModel();
+    CalendarService service = new CalendarService(calendar);
+    EditCommandParser parser = new EditCommandParser(service);
+
+    service.addSingleEvent("Meeting",
+        LocalDateTime.of(2025, 3, 1, 9, 0),
+        LocalDateTime.of(2025, 3, 1, 10, 0),
+        "", "", true, false);
+
     String[] tokens = ("edit event --autoDecline subject Meeting "
         + "from 2025-03-01T09:00 to 2025-03-01T10:00 with TeamMeeting").split("\\s+");
     Command cmd = parser.parse(tokens);
+    assertNotNull(cmd);
+
     String result = cmd.execute();
-    assertNotNull(result);
+    assertTrue(result.contains("Edited event(s)"));
   }
+
 
   /**
    * Tests the "edit events" branch in ALL mode without auto-decline.
    */
   @Test
   public void testEditEventsAllModeNoAutoDecline() throws Exception {
+    CalendarModel calendar = new CalendarModel();
+    CalendarService service = new CalendarService(calendar);
+    EditCommandParser parser = new EditCommandParser(service);
+
+    Set<DayOfWeek> days = new HashSet<>();
+    days.add(DayOfWeek.SATURDAY);
+    service.addRecurringEvent("Meeting",
+        LocalDateTime.of(2025, 3, 1, 9, 0),
+        LocalDateTime.of(2025, 3, 1, 10, 0),
+        "", "",
+        true,
+        days,
+        3,
+        null,
+        false);
+
     String[] tokens = "edit events subject Meeting with FinalMeeting".split("\\s+");
     Command cmd = parser.parse(tokens);
+    assertNotNull(cmd);
+
     String result = cmd.execute();
-    assertEquals("No matching event found to edit.", result);
+    assertTrue(result.contains("Edited event(s)"));
   }
 
-  /**
-   * Tests missing "from" in SINGLE mode.
-   */
+
   @Test
   public void testEditCommandMissingFrom() throws Exception {
     String[] tokens = "edit event subject Meeting TeamMeeting".split("\\s+");
@@ -203,21 +302,40 @@ public class EditCommandParserTest {
     assertEquals("Expected 'from' in edit event command.", result);
   }
 
-  /**
-   * Tests the "edit events" branch with auto-decline flag present.
-   * Expected syntax: "edit events --autoDecline description Meeting with NewDesc"
-   */
+
   @Test
   public void testEditEventsAllModeWithAutoDecline() throws Exception {
+    CalendarModel calendar = new CalendarModel();
+    CalendarService service = new CalendarService(calendar);
+    EditCommandParser parser = new EditCommandParser(service);
+
+    Set<DayOfWeek> days = new HashSet<>();
+    days.add(DayOfWeek.SATURDAY);
+
+    service.addRecurringEvent(
+        "Meeting",
+        LocalDateTime.of(2025, 3, 1, 9, 0),
+        LocalDateTime.of(2025, 3, 1, 10, 0),
+        "desc",
+        "loc",
+        true,
+        days,
+        -1,
+        LocalDate.of(2025, 3, 29),
+        false
+    );
+
     String[] tokens = "edit events --autoDecline description Meeting with NewDesc".split("\\s+");
     Command cmd = parser.parse(tokens);
     String result = cmd.execute();
-    assertEquals("No matching event found to edit.", result);
+
+    assertTrue(result.contains("Edited event(s)"));
   }
 
+
   /**
-   * Tests the "edit events" branch (FROM mode) with an invalid date token.
-   * Expected syntax: "edit events location Meeting from invalidDate with NewLocation"
+   * Tests the "edit events" branch (FROM mode) with an invalid date token. Expected syntax: "edit
+   * events location Meeting from invalidDate with NewLocation"
    */
   @Test
   public void testEditEventsFromModeInvalidDate() throws Exception {
@@ -271,4 +389,5 @@ public class EditCommandParserTest {
     String result = cmd.execute();
     assertEquals("Edit command missing 'with' and new value.", result);
   }
+
 }

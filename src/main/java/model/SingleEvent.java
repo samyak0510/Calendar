@@ -9,7 +9,6 @@ import java.util.List;
  */
 public class SingleEvent extends AbstractEvent {
 
-  private LocalDateTime endDateTime;
 
   /**
    * Constructs a SingleEvent with the specified parameters.
@@ -38,12 +37,6 @@ public class SingleEvent extends AbstractEvent {
    *
    * @return the effective end date and time
    */
-  public LocalDateTime getEffectiveEndDateTime() {
-    if (endDateTime == null) {
-      return startDateTime.toLocalDate().atTime(23, 59);
-    }
-    return endDateTime;
-  }
 
   /**
    * Checks if this event conflicts with another event.
@@ -72,18 +65,6 @@ public class SingleEvent extends AbstractEvent {
     return false;
   }
 
-  /**
-   * Updates the end date and time of the event.
-   *
-   * @param newEndDateTime the new end date and time
-   * @throws InvalidDateException if the new end date and time is before the start date and time
-   */
-  public void setEndDateTime(LocalDateTime newEndDateTime) throws InvalidDateException {
-    if (newEndDateTime != null && newEndDateTime.isBefore(this.startDateTime)) {
-      throw new InvalidDateException("End date & time must be after start date & time.");
-    }
-    this.endDateTime = newEndDateTime;
-  }
 
   /**
    * Returns a list containing this event as its sole occurrence.

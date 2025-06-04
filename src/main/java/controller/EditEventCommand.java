@@ -1,23 +1,13 @@
 package controller;
 
-import model.AbstractEvent;
-import model.CalendarModel;
-import model.Event;
-import model.ICalendarService;
-import model.InvalidDateException;
-import model.SingleEvent;
 import java.time.LocalDateTime;
-import java.util.List;
+import model.ICalendarService;
 
 /**
- * Edits existing events based on a specified property change.
+ * Edits existing events based on a specified property change and supports editing a single event,
+ * all occurrences, or from a specific point onward.
  */
 public class EditEventCommand implements Command {
-
-  /**
-   * ENUM for EditMode.
-   */
-  public enum EditMode { SINGLE, FROM, ALL }
 
   private ICalendarService service;
   private EditMode mode;
@@ -26,14 +16,32 @@ public class EditEventCommand implements Command {
   private String property;
   private String newValue;
   private boolean autoDecline;
-
-
+  /**
+   * Constructs a command to edit an event with minimal parameters.
+   *
+   * @param service     The calendar service managing events
+   * @param meeting     The subject of the event to edit
+   * @param target      The start time of the event to edit
+   * @param subject     The property to change
+   * @param teamMeeting The new value for the property
+   * @param editMode    The scope of the edit (SINGLE, FROM, or ALL)
+   */
   public EditEventCommand(ICalendarService service, String meeting, LocalDateTime target,
       String subject, String teamMeeting, EditMode editMode) {
     this(service, meeting, target, subject, teamMeeting, editMode, false);
   }
 
-
+  /**
+   * Constructs a command to edit an event with all parameters.
+   *
+   * @param service         The calendar service managing events
+   * @param originalSubject The subject of the event to edit
+   * @param start           The start time of the event (null for ALL mode)
+   * @param property        The property to change (e.g., "subject", "start")
+   * @param newValue        The new value for the property
+   * @param mode            The scope of the edit (SINGLE, FROM, or ALL)
+   * @param autoDecline     Whether to auto-decline conflicting events
+   */
   public EditEventCommand(ICalendarService service, String originalSubject, LocalDateTime start,
       String property, String newValue, EditMode mode, boolean autoDecline) {
     this.service = service;
@@ -45,17 +53,35 @@ public class EditEventCommand implements Command {
     this.autoDecline = autoDecline;
   }
 
+  /**
+   * Constructs a command to edit all event occurrences.
+   *
+   * @param service         The calendar service managing events
+   * @param originalSubject The subject of the event to edit
+   * @param property        The property to change
+   * @param newValue        The new value for the property
+   * @param mode            The scope of the edit (typically ALL)
+   */
   public EditEventCommand(ICalendarService service, String originalSubject, String property,
       String newValue, EditMode mode) {
     this(service, originalSubject, null, property, newValue, mode, false);
   }
 
-
+  /**
+   * Executes the event edit operation based on the specified mode.
+   *
+   * @return A message confirming the edit was applied
+   * @throws Exception if an error occurs during the edit process
+   */
   @Override
   public String execute() throws Exception {
-    service.editEvent(originalSubject, start, property, newValue, ICalendarService.EditMode.valueOf(mode.name()));
+    service.editEvent(originalSubject, start, property, newValue,
+        ICalendarService.EditMode.valueOf(mode.name()));
     return "Edited event(s) '" + originalSubject + "': " + property + " changed to " + newValue;
   }
 
-
+  /**
+   * Enum defining the scope of the edit operation.
+   */
+  public enum EditMode {SINGLE, FROM, ALL}
 }

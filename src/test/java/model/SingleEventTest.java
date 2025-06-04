@@ -2,23 +2,21 @@ package model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import org.junit.Test;
 
+
 /**
- * Unit tests for the SingleEvent class.
+ * JUnit Test Case
  */
 public class SingleEventTest {
-
 
   @Test
   public void testValidSingleEvent() throws InvalidDateException {
@@ -29,7 +27,6 @@ public class SingleEventTest {
     assertEquals(start, event.getStartDateTime());
     assertEquals(end, event.getEffectiveEndDateTime());
   }
-
 
   @Test(expected = InvalidDateException.class)
   public void testInvalidSingleEventEndBeforeStart() throws InvalidDateException {
@@ -46,7 +43,6 @@ public class SingleEventTest {
     assertEquals(expectedEnd, event.getEffectiveEndDateTime());
   }
 
-
   @Test
   public void testConflictsBetweenSingleEvents() throws InvalidDateException {
     LocalDateTime start1 = LocalDateTime.of(2025, 3, 1, 9, 0);
@@ -60,7 +56,6 @@ public class SingleEventTest {
     assertTrue(event1.conflictsWith(event2));
     assertTrue(event2.conflictsWith(event1));
   }
-
 
   @Test
   public void testNonConflictingSingleEvents() throws InvalidDateException {
@@ -76,7 +71,6 @@ public class SingleEventTest {
     assertFalse(event2.conflictsWith(event1));
   }
 
-
   @Test
   public void testConflictWithRecurringEventUsingSingleEvent() throws InvalidDateException {
     LocalDateTime singleStart = LocalDateTime.of(2025, 3, 1, 9, 0);
@@ -87,60 +81,11 @@ public class SingleEventTest {
     LocalDateTime recurEnd = LocalDateTime.of(2025, 3, 1, 9, 45);
     Set<DayOfWeek> days = new HashSet<>();
     days.add(recurStart.getDayOfWeek());
-    RecurringEvent recurring = new RecurringEvent("TestRecurring", recurStart, recurEnd,
-        "", "", true, days, 1, null);
+    RecurringEvent recurring = new RecurringEvent("TestRecurring", recurStart, recurEnd, "", "",
+        true, days, 1, null);
 
     assertTrue(single.conflictsWith(recurring));
   }
-
-
-  @Test
-  public void testConflictWithNonSupportedEvent() throws InvalidDateException {
-    LocalDateTime start = LocalDateTime.of(2025, 3, 1, 9, 0);
-    LocalDateTime end = LocalDateTime.of(2025, 3, 1, 10, 0);
-    SingleEvent single = new SingleEvent("Test", start, end, "", "", true);
-
-    Event dummy = new Event() {
-      @Override
-      public String getSubject() {
-        return "Dummy";
-      }
-
-      @Override
-      public LocalDateTime getStartDateTime() {
-        return LocalDateTime.of(2025, 3, 1, 11, 0);
-      }
-
-      @Override
-      public String getDescription() {
-        return "";
-      }
-
-      @Override
-      public String getLocation() {
-        return "";
-      }
-
-      @Override
-      public boolean isPublic() {
-        return true;
-      }
-
-      @Override
-      public boolean conflictsWith(Event other) {
-        return false;
-      }
-
-      @Override
-      public List<Event> getOccurrences() {
-        return Collections.emptyList();
-      }
-
-    };
-
-    assertFalse(single.conflictsWith(dummy));
-  }
-
 
   @Test
   public void testGetOccurrencesReturnsSelf() throws InvalidDateException {
@@ -150,4 +95,5 @@ public class SingleEventTest {
     assertEquals(1, event.getOccurrences().size());
     assertSame(event, event.getOccurrences().get(0));
   }
+
 }
