@@ -14,7 +14,7 @@ public class CopyEventsBetweenCommandParser implements ICommandParser {
   private IMultiCalendarService multiCalendarService;
 
   /**
-   * Constructs a parser with the given calendar service.
+   * Constructor for the above class.
    *
    * @param multiCalendarService The service for managing calendar operations
    */

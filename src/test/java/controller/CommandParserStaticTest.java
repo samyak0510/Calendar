@@ -6,6 +6,9 @@ import java.time.LocalDateTime;
 import model.InvalidDateException;
 import org.junit.Test;
 
+/**
+ * Unit test for the static date-time parsing method in CommandParserStatic.
+ */
 public class CommandParserStaticTest {
 
   @Test

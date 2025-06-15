@@ -18,9 +18,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * JUnit Test Case
+ * Unit tests for CSVExporter. These tests verify the behavior of the exporter under many
+ * scenarios.
  */
-
 public class CSVExporterTest {
 
   private final String testFile = "test_calendar.csv";

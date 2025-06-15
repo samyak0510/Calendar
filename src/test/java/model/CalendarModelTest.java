@@ -15,9 +15,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * JUnit Test Case
+ * Unit tests for the CalendarModel class to verify event handling and storing logic.
  */
-
 public class CalendarModelTest {
 
   private CalendarModel calendar;

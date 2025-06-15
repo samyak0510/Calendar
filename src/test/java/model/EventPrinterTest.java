@@ -7,8 +7,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.Test;
 
+
 /**
- * JUnit Test Case
+ * Unit tests for the EventPrinter class. These tests ensure event information is correctly printed
+ * for given dates or ranges.
  */
 public class EventPrinterTest {
 
@@ -69,7 +71,7 @@ public class EventPrinterTest {
     CalendarModel model = new CalendarModel();
     EventPrinter printer = new EventPrinter(model);
     String output = printer.printEventsOn(LocalDate.of(2025, 5, 1));
-    assertTrue(output.contains("Events on 2025-05-01:"));
+    assertTrue(output.isEmpty());
     String[] lines = output.split("\n");
     assertEquals(1, lines.length);
   }

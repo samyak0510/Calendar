@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Interface defining the behavior of an event.
- * Provides methods to access event details and check for conflicts.
+ * Interface defining the behavior of an event. Provides methods to access event details and check
+ * for conflicts.
  */
 public interface Event {
 
@@ -53,8 +53,8 @@ public interface Event {
   boolean conflictsWith(Event other);
 
   /**
-   * Returns a list of event occurrences.
-   * For single events, this contains just the event itself; for recurring events, all instances.
+   * Returns a list of event occurrences. For single events, this contains just the event itself;
+   * for recurring events, all instances.
    *
    * @return A list of event occurrences
    */

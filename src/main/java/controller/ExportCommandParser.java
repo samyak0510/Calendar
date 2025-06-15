@@ -30,7 +30,12 @@ public class ExportCommandParser implements ICommandParser {
     try {
       if (tokens.length >= 3 && tokens[1].equalsIgnoreCase("cal")) {
         String fileName = tokens[2];
-        return new ExportCalendarCommand(calendarService, fileName);
+        String format = "csv";  // Default format
+        int dotIndex = fileName.lastIndexOf(".");
+        if (dotIndex != -1 && dotIndex < fileName.length() - 1) {
+          format = fileName.substring(dotIndex + 1).toLowerCase();
+        }
+        return new ExportCalendarCommand(calendarService, format, fileName);
       } else {
         return () -> "Invalid export command.";
       }

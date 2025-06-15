@@ -15,7 +15,7 @@ public class CSVExporter implements Exporter {
   /**
    * Writes a single event row to the CSV file.
    *
-   * @param se The event to write
+   * @param se     The event to write
    * @param writer The writer for the CSV file
    * @throws IOException If writing fails
    */
@@ -68,7 +68,7 @@ public class CSVExporter implements Exporter {
     String filePath = Paths.get(System.getProperty("user.dir"), fileName).toString();
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
       writer.write("Subject,Start Date,Start Time,End Date,End Time,AllDayEvent,"
-              + "Description,Location,Private");
+          + "Description,Location,Private");
       writer.newLine();
 
       List<Event> events = calendar.getAllEvents();

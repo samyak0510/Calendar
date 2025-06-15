@@ -14,12 +14,11 @@ import org.junit.Test;
  */
 public class ShowStatusCommandTest {
 
-  private CalendarModel calendara;
   private ICalendarService calendar;
 
   @Before
   public void setUp() throws Exception {
-    calendara = new CalendarModel();
+    CalendarModel calendara = new CalendarModel();
     calendar = new CalendarService(calendara);
     LocalDateTime start = LocalDateTime.of(2025, 3, 1, 9, 0);
     LocalDateTime end = LocalDateTime.of(2025, 3, 1, 10, 0);

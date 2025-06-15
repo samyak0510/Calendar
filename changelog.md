@@ -1,5 +1,13 @@
 # Changelog
 
+## [Sprint 4] - 2025-06-15
+
+- feat: Java Swing GUI providing month view, day detail dialog, and visual event creation/editing
+- feat: CSV import for bulk event upload compatible with Google Calendar format
+- feat: Unified controller now supports CLI, headless scripts, and GUI modes from single JAR (`Assignment6.jar`)
+- docs: Updated README with GUI screenshots, usage guide, and new architecture diagrams
+- chore: Added release tag `v4.0.0` and automated GitHub Actions build for JAR artifact
+
 ## [Sprint 3] - 2025-01-15
 
 - feat: Multi-calendar support with unique names and IANA timezones

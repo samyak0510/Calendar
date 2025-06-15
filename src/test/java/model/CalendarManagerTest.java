@@ -10,9 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * JUnit Test Case
+ * Unit tests for the {@link CalendarManager} class.
  */
-
 public class CalendarManagerTest {
 
   private CalendarManager manager;

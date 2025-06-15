@@ -11,7 +11,7 @@ public class EditCalendarCommandParser implements ICommandParser {
   private IMultiCalendarService multiCalendarService;
 
   /**
-   * Constructs a parser with the provided calendar service.
+   * Constructor for the class.
    *
    * @param multiCalendarService The service for managing multiple calendars
    */

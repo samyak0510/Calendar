@@ -22,18 +22,18 @@ public interface ICalendarManager {
   ICalendarContext getCalendar(String name);
 
   /**
-   * Sets the active calendar by name.
-   *
-   * @param name the name of the calendar to set as active
-   */
-  void setCurrentCalendar(String name);
-
-  /**
    * Gets the currently active calendar context.
    *
    * @return the current calendar
    */
   ICalendarContext getCurrentCalendar();
+
+  /**
+   * Sets the active calendar by name.
+   *
+   * @param name the name of the calendar to set as active
+   */
+  void setCurrentCalendar(String name);
 
   /**
    * Removes a calendar from the system.

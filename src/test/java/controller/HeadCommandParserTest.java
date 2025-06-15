@@ -11,7 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * JUnit Test Case
+ * JUnit Test Case for {@link HeadCommandParser}, which delegates the arguments to other dedicated
+ * parsers based on the arguments provided.
  */
 
 public class HeadCommandParserTest {

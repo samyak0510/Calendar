@@ -24,7 +24,7 @@ public class CreateRecurringEventCommand implements Command {
   private LocalDate recurrenceEndDate;
 
   /**
-   * Constructs a command to create a recurring event with all necessary details.
+   * Constructor of the class.
    *
    * @param service         The calendar service to manage the event
    * @param autoDecline     Whether to automatically decline conflicting events

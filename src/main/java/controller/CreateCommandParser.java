@@ -74,12 +74,22 @@ public class CreateCommandParser implements ICommandParser {
         index++;
         String startDTStr = tokens[index++];
         LocalDateTime start = CommandParserStatic.parseDateTimeStatic(startDTStr);
+
         if (!tokens[index].equalsIgnoreCase("to")) {
           return () -> "Expected 'to' after start time.";
         }
         index++;
         String endDTStr = tokens[index++];
-        LocalDateTime end = CommandParserStatic.parseDateTimeStatic(endDTStr);
+
+        LocalDateTime end;
+
+        if (endDTStr.contains("T")) {
+          end = CommandParserStatic.parseDateTimeStatic(endDTStr);
+        } else {
+          LocalDate date = LocalDate.parse(endDTStr, DATE_FORMAT);
+          end = date.atTime(23, 59);
+        }
+
         if (index < tokens.length && tokens[index].equalsIgnoreCase("repeats")) {
           return getRecurringCommand(tokens, autoDecline, index, subject, start, end);
         } else {
@@ -117,7 +127,7 @@ public class CreateCommandParser implements ICommandParser {
   }
 
   /**
-   * Creates a recurring event command based on additional recurrence parameters.
+   * Creates a recurring event command.
    *
    * @param tokens      The full array of command tokens
    * @param autoDecline Whether to auto-decline conflicting events

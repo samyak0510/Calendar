@@ -7,7 +7,6 @@ import model.IMultiCalendarService;
  */
 public class ExtendedCalendarController implements ICalendarController {
 
-  private IMultiCalendarService multiCalendarService;
   private IHeadCommandParser extendedParser;
 
   /**
@@ -16,8 +15,7 @@ public class ExtendedCalendarController implements ICalendarController {
    * @param multiCalendarService The service for managing multiple calendars
    */
   public ExtendedCalendarController(IMultiCalendarService multiCalendarService) {
-    this.multiCalendarService = multiCalendarService;
-    this.extendedParser = new ExtendedCommandParser(this.multiCalendarService);
+    this.extendedParser = new ExtendedCommandParser(multiCalendarService);
   }
 
   /**

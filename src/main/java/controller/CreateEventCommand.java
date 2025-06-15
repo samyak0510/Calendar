@@ -4,8 +4,7 @@ import java.time.LocalDateTime;
 import model.ICalendarService;
 
 /**
- * Creates a single event in the calendar and implements the Command pattern to encapsulate event
- * creation logic.
+ * Creates a single event in the calendar and implements the Command pattern.
  */
 public class CreateEventCommand implements Command {
 
@@ -19,7 +18,7 @@ public class CreateEventCommand implements Command {
   private boolean isPublic;
 
   /**
-   * Constructs a command to create a single event with all necessary details.
+   * Constructor of the class.
    *
    * @param service     The calendar service to manage the event
    * @param autoDecline Whether to automatically decline conflicting events

@@ -136,12 +136,15 @@ public class CalendarService implements ICalendarService {
    * @throws IOException If the export fails
    */
   @Override
-  public String exporttoCSV(String format, String path) throws IOException {
-    if (format.equalsIgnoreCase("csv")) {
-      return exporter.export(model, path);
-    } else {
-      throw new UnsupportedOperationException("Export format not supported: " + format);
-    }
+  public String exportTo(String format, String path) throws IOException {
+    exporter = new ExportFactory().getExport(format);
+    return exporter.export(model, path);
+  }
+
+  @Override
+  public String importFrom(String format, String path) throws Exception {
+    Importer importer = new ImportFactory().getImporter(format);
+    return importer.importData(model, path);
   }
 
   /**

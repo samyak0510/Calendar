@@ -10,6 +10,10 @@ import model.MultiCalendarService;
 import org.junit.Test;
 
 
+/**
+ * Unit test for the CopyEventCommand class. Verifies that an event can be successfully copied from
+ * one calendar to another.
+ */
 public class CopyEventCommandTest {
 
   @Test

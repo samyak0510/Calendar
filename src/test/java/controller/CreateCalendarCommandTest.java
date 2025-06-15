@@ -8,6 +8,9 @@ import model.IMultiCalendarService;
 import model.MultiCalendarService;
 import org.junit.Test;
 
+/**
+ * Tests for the CreateCalendarCommand class.
+ */
 public class CreateCalendarCommandTest {
 
   @Test

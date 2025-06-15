@@ -11,7 +11,8 @@ import model.ICalendarService;
 import org.junit.Test;
 
 /**
- * JUnit Test Case
+ * JUnit Test Case for {@link ExportCalendarCommandTest}. Verifies that the CSV are exported and its
+ * feedback string is returned.
  */
 
 public class ExportCalendarCommandTest {
@@ -26,7 +27,7 @@ public class ExportCalendarCommandTest {
     calendar.addSingleEvent("Meeting", start, end, "desc", "room", true, false);
 
     String fileName = "test_export_message.csv";
-    ExportCalendarCommand exportCmd = new ExportCalendarCommand(calendar, fileName);
+    ExportCalendarCommand exportCmd = new ExportCalendarCommand(calendar, "csv", fileName);
     String result = exportCmd.execute();
 
     assertNotEquals("", result);
@@ -42,7 +43,7 @@ public class ExportCalendarCommandTest {
     CalendarModel calendara = new CalendarModel();
     ICalendarService calendar = new CalendarService(calendara);
     String invalidFileName = "/nonexistent_folder/test_export.csv";
-    ExportCalendarCommand exportCmd = new ExportCalendarCommand(calendar, invalidFileName);
+    ExportCalendarCommand exportCmd = new ExportCalendarCommand(calendar, "csv", invalidFileName);
     String result = exportCmd.execute();
     assertTrue(result.startsWith("Export failed:"));
   }

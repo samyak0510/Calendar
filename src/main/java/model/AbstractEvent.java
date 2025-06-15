@@ -135,6 +135,10 @@ public abstract class AbstractEvent implements Event {
     return autoDecline;
   }
 
+  /**
+   * Sets the {@code autoDecline} parameter.
+   * @param autoDecline boolean autoDecline
+   */
   public void setAutoDecline(boolean autoDecline) {
     this.autoDecline = autoDecline;
   }
@@ -147,6 +151,12 @@ public abstract class AbstractEvent implements Event {
     return endDateTime;
   }
 
+  /**
+   * Sets a new EndDateTime in DateTime format.
+   *
+   * @param newEndDateTime represents end date.
+   * @throws InvalidDateException if end date is before start date.
+   */
   public void setEndDateTime(LocalDateTime newEndDateTime) throws InvalidDateException {
     if (newEndDateTime != null && newEndDateTime.isBefore(this.startDateTime)) {
       throw new InvalidDateException("End date & time must be after start date & time.");

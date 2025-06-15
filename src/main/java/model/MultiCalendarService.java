@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Provides calendar services that support managing multiple calendars and delegating
- * event operations.
+ * Provides calendar services that support managing multiple calendars and delegating event
+ * operations.
  */
 public class MultiCalendarService implements IMultiCalendarService {
 
@@ -26,7 +26,11 @@ public class MultiCalendarService implements IMultiCalendarService {
 
   @Override
   public boolean createCalendar(String name, String timezone) throws Exception {
-    ZoneId.of(timezone);
+    try {
+      ZoneId.of(timezone);
+    } catch (Exception e) {
+      throw new Exception("Invalid timezone: " + timezone);
+    }
     if (calendarManager.getCalendar(name) != null) {
       return false;
     }
@@ -36,7 +40,7 @@ public class MultiCalendarService implements IMultiCalendarService {
 
   @Override
   public boolean editCalendar(String calendarName, String property, String newValue)
-          throws Exception {
+      throws Exception {
     ICalendarContext cal = calendarManager.getCalendar(calendarName);
     if (cal == null) {
       return false;
@@ -49,13 +53,18 @@ public class MultiCalendarService implements IMultiCalendarService {
       cal.setName(newValue);
       calendarManager.addCalendar(cal);
       if (calendarManager.getCurrentCalendar() != null &&
-              calendarManager.getCurrentCalendar().getName().equals(calendarName)) {
+          calendarManager.getCurrentCalendar().getName().equals(calendarName)) {
         calendarManager.setCurrentCalendar(newValue);
       }
       return true;
     } else if (property.equalsIgnoreCase("timezone")) {
       ZoneId oldZone = cal.getTimezone();
-      ZoneId newZone = ZoneId.of(newValue);
+      ZoneId newZone;
+      try {
+        newZone = ZoneId.of(newValue);
+      } catch (Exception e) {
+        throw new Exception("Invalid timezone: " + newValue);
+      }
       cal.setTimezone(newValue);
       EventMigrationHelper.migrateEvents(cal, oldZone, newZone);
       return true;
@@ -83,21 +92,21 @@ public class MultiCalendarService implements IMultiCalendarService {
 
   @Override
   public void addSingleEvent(String subject, LocalDateTime start, LocalDateTime end,
-                             String description, String location, boolean isPublic,
-                             boolean autoDecline) throws Exception {
+      String description, String location, boolean isPublic,
+      boolean autoDecline) throws Exception {
     getCurrentCalendar().getCalendarService()
-            .addSingleEvent(subject, start, end, description, location, isPublic, true);
+        .addSingleEvent(subject, start, end, description, location, isPublic, true);
   }
 
   @Override
   public void addRecurringEvent(String subject, LocalDateTime start, LocalDateTime end,
-                                String description, String location, boolean isPublic,
-                                Set<DayOfWeek> recurrenceDays,
-                                int occurrenceCount, LocalDate recurrenceEndDate,
-                                boolean autoDecline) throws Exception {
+      String description, String location, boolean isPublic,
+      Set<DayOfWeek> recurrenceDays,
+      int occurrenceCount, LocalDate recurrenceEndDate,
+      boolean autoDecline) throws Exception {
     getCurrentCalendar().getCalendarService()
-            .addRecurringEvent(subject, start, end, description, location,
-                    isPublic, recurrenceDays, occurrenceCount, recurrenceEndDate, true);
+        .addRecurringEvent(subject, start, end, description, location,
+            isPublic, recurrenceDays, occurrenceCount, recurrenceEndDate, true);
   }
 
   @Override
@@ -129,13 +138,18 @@ public class MultiCalendarService implements IMultiCalendarService {
 
   @Override
   public void editEvent(String subject, LocalDateTime from, String property,
-                        String newValue, EditMode mode) throws Exception {
+      String newValue, EditMode mode) throws Exception {
     getCurrentCalendar().getCalendarService().editEvent(subject, from, property, newValue, mode);
   }
 
   @Override
-  public String exporttoCSV(String format, String path) throws Exception {
-    return getCurrentCalendar().getCalendarService().exporttoCSV(format, path);
+  public String exportTo(String format, String path) throws Exception {
+    return getCurrentCalendar().getCalendarService().exportTo(format, path);
+  }
+
+  @Override
+  public String importFrom(String format, String path) throws Exception {
+    return getCurrentCalendar().getCalendarService().importFrom(format, path);
   }
 
   @Override
@@ -150,33 +164,44 @@ public class MultiCalendarService implements IMultiCalendarService {
 
   @Override
   public String copyEvent(String eventName, LocalDateTime sourceStart,
-                          String targetCalendarName, LocalDateTime targetStart) throws Exception {
+      String targetCalendarName, LocalDateTime targetStart) throws Exception {
     ICalendarContext sourceCal = getCurrentCalendar();
     ICalendarContext targetCal = calendarManager.getCalendar(targetCalendarName);
-    if (targetCal == null)
+    if (targetCal == null) {
       throw new Exception("Target calendar not found: " + targetCalendarName);
+    }
     return EventCopyHelper.copyEvent(sourceCal, targetCal, eventName, sourceStart, targetStart);
   }
 
   @Override
   public String copyEventsOn(LocalDate sourceDate, String targetCalendarName,
-                             LocalDate targetDate) throws Exception {
+      LocalDate targetDate) throws Exception {
     ICalendarContext sourceCal = getCurrentCalendar();
     ICalendarContext targetCal = calendarManager.getCalendar(targetCalendarName);
-    if (targetCal == null)
+    if (targetCal == null) {
       throw new Exception("Target calendar not found: " + targetCalendarName);
+    }
     return EventCopyHelper.copyEventsOnDate(sourceCal, targetCal, sourceDate, targetDate);
   }
 
   @Override
   public String copyEventsBetween(LocalDate sourceStartDate, LocalDate sourceEndDate,
-                                  String targetCalendarName, LocalDate targetStartDate)
-          throws Exception {
+      String targetCalendarName, LocalDate targetStartDate)
+      throws Exception {
     ICalendarContext sourceCal = getCurrentCalendar();
     ICalendarContext targetCal = calendarManager.getCalendar(targetCalendarName);
-    if (targetCal == null)
+    if (targetCal == null) {
       throw new Exception("Target calendar not found: " + targetCalendarName);
+    }
     return EventCopyHelper.copyEventsBetweenDates(sourceCal, targetCal, sourceStartDate,
-            sourceEndDate, targetStartDate);
+        sourceEndDate, targetStartDate);
+  }
+
+  @Override
+  public String[] getCurrentCalendarNameAndZone() throws Exception {
+    ICalendarContext currentCal = getCurrentCalendar();
+    String name = currentCal.getName();
+    String timezone = currentCal.getTimezone().toString();
+    return new String[]{name, timezone};
   }
 }

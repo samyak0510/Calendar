@@ -10,7 +10,7 @@ import model.MultiCalendarService;
 import org.junit.Test;
 
 /**
- * JUnit Test Case
+ * JUnit Test Case for {@link EditCalendarCommand}.
  */
 
 public class EditCalendarCommandTest {

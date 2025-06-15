@@ -10,9 +10,9 @@ import java.time.ZoneId;
 import org.junit.Test;
 
 /**
- * JUnit Test Case
+ * Tests for the {@link CalendarContext} class. Checks different scenarios such as Invalid
+ * TimeZones, Empty Strings, Change of TimeZones etc.
  */
-
 public class CalendarContextTest {
 
   @Test

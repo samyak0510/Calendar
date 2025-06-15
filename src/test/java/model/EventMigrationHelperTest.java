@@ -10,7 +10,7 @@ import java.util.List;
 import org.junit.Test;
 
 /**
- * JUnit Test Case
+ * Test cases for EventMigration class. Checks if the events migrated with the change in Zones.
  */
 public class EventMigrationHelperTest {
 

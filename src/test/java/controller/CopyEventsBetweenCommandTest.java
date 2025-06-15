@@ -10,6 +10,10 @@ import model.IMultiCalendarService;
 import model.MultiCalendarService;
 import org.junit.Test;
 
+/**
+ * Unit tests for the CopyEventsBetweenCommand class. These tests verify the behavior of copying
+ * events between calendars over a date range.
+ */
 public class CopyEventsBetweenCommandTest {
 
   @Test

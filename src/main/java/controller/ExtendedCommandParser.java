@@ -11,7 +11,6 @@ import model.IMultiCalendarService;
 public class ExtendedCommandParser implements IHeadCommandParser {
 
   private Map<String, ICommandParser> parserMap;
-  private IMultiCalendarService multiCalendarService;
   private IHeadCommandParser baseParser;
 
   /**
@@ -21,16 +20,15 @@ public class ExtendedCommandParser implements IHeadCommandParser {
    * @param multiCalendarService The service managing multiple calendars
    */
   public ExtendedCommandParser(IMultiCalendarService multiCalendarService) {
-    this.multiCalendarService = multiCalendarService;
     this.baseParser = new HeadCommandParser(multiCalendarService);
     parserMap = new HashMap<>();
-    parserMap.put("create calendar", new CreateCalendarCommandParser(this.multiCalendarService));
-    parserMap.put("edit calendar", new EditCalendarCommandParser(this.multiCalendarService));
-    parserMap.put("use calendar", new UseCalendarCommandParser(this.multiCalendarService));
-    parserMap.put("copy event", new CopyEventCommandParser(this.multiCalendarService));
-    parserMap.put("copy events on", new CopyEventsOnCommandParser(this.multiCalendarService));
+    parserMap.put("create calendar", new CreateCalendarCommandParser(multiCalendarService));
+    parserMap.put("edit calendar", new EditCalendarCommandParser(multiCalendarService));
+    parserMap.put("use calendar", new UseCalendarCommandParser(multiCalendarService));
+    parserMap.put("copy event", new CopyEventCommandParser(multiCalendarService));
+    parserMap.put("copy events on", new CopyEventsOnCommandParser(multiCalendarService));
     parserMap.put("copy events between",
-        new CopyEventsBetweenCommandParser(this.multiCalendarService));
+        new CopyEventsBetweenCommandParser(multiCalendarService));
   }
 
   /**

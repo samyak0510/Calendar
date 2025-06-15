@@ -15,7 +15,7 @@ import java.util.Set;
 import org.junit.Test;
 
 /**
- * JUnit Test Case
+ * JUnit Test Case for {@link RecurringEvent}.
  */
 public class RecurringEventTest {
 

@@ -14,7 +14,7 @@ public class CopyEventsOnCommandParser implements ICommandParser {
   private IMultiCalendarService multiCalendarService;
 
   /**
-   * Constructs a parser with the provided calendar service.
+   * Constructor of the class.
    *
    * @param multiCalendarService The service managing calendar operations
    */
@@ -23,9 +23,7 @@ public class CopyEventsOnCommandParser implements ICommandParser {
   }
 
   /**
-   * Parses an array of tokens into a CopyEventsOnCommand. Expects format: "copy events on [source
-   * date] --target [calendar] to [target date]". Dates must be in yyyy-MM-dd format. Returns an
-   * error command if parsing fails.
+   * Parses an array of tokens into a CopyEventsOnCommand.
    *
    * @param tokens The array of strings from the command input
    * @return A Command object, either a valid CopyEventsOnCommand or an error command

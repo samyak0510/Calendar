@@ -11,9 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * JUnit Test Case
+ * Tests for the CreateEventCommand class.
  */
-
 public class CreateEventCommandTest {
 
   private CalendarModel calendar;

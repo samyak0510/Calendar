@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * JUnit Test Case
+ * JUnit Test Case for {@link EditEventCommand}.
  */
 
 public class EditEventCommandTest {

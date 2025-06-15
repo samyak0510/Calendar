@@ -64,12 +64,18 @@ public class CalendarModel implements ICalendarModel {
    * @return True if the event occurs on the specified date, false otherwise
    */
   private boolean occursOnDate(Event event, LocalDate date) {
-    for (Event occurrence : event.getOccurrences()) {
-      if (occurrence.getStartDateTime().toLocalDate().equals(date)) {
-        return true;
+    if (event instanceof SingleEvent) {
+      LocalDate start = event.getStartDateTime().toLocalDate();
+      LocalDate end = event.getEffectiveEndDateTime().toLocalDate();
+      return (!date.isBefore(start)) && (!date.isAfter(end));
+    } else {
+      for (Event occurrence : event.getOccurrences()) {
+        if (occurrence.getStartDateTime().toLocalDate().equals(date)) {
+          return true;
+        }
       }
+      return false;
     }
-    return false;
   }
 
   /**

@@ -5,7 +5,7 @@ import model.IMultiCalendarService;
 
 /**
  * A command class for copying all events on a specific date to another date in a target calendar.
- * It will implement the Command pattern for single-day event copying operations.
+ * It implements the Command pattern for single-day event copying operations.
  */
 public class CopyEventsOnCommand implements Command {
 
@@ -15,7 +15,7 @@ public class CopyEventsOnCommand implements Command {
   private LocalDate targetDate;
 
   /**
-   * Creates a new command for copying events from one date to another.
+   * Constructor of the class.
    *
    * @param multiCalendarService The service handling calendar operations
    * @param sourceDate           The date containing the events to copy

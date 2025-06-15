@@ -26,11 +26,10 @@ public class HeadCommandParser implements IHeadCommandParser {
   }
 
   /**
-   * Parses the provided command line string into a Command. Supports basic commands like create,
-   * edit, and export, plus an exit command.
+   * Parses the provided command line string into a Command.
    *
    * @param commandLine The input command string to parse
-   * @return A Command object corresponding to the input, or null if empty
+   * @return A Command object corresponding to the input
    */
   @Override
   public Command parse(String commandLine) {

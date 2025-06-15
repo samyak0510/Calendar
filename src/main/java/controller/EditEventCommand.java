@@ -4,8 +4,7 @@ import java.time.LocalDateTime;
 import model.ICalendarService;
 
 /**
- * Edits existing events based on a specified property change and supports editing a single event,
- * all occurrences, or from a specific point onward.
+ * Edits existing events based on a specified property change.
  */
 public class EditEventCommand implements Command {
 
@@ -15,20 +14,20 @@ public class EditEventCommand implements Command {
   private LocalDateTime start;
   private String property;
   private String newValue;
-  private boolean autoDecline;
+
   /**
    * Constructs a command to edit an event with minimal parameters.
    *
-   * @param service     The calendar service managing events
-   * @param meeting     The subject of the event to edit
-   * @param target      The start time of the event to edit
-   * @param subject     The property to change
-   * @param teamMeeting The new value for the property
-   * @param editMode    The scope of the edit (SINGLE, FROM, or ALL)
+   * @param service  The calendar service managing events
+   * @param subject  The subject of the event to edit
+   * @param start    The start time of the event to edit
+   * @param property The property to change
+   * @param newValue The new value for the property
+   * @param editMode The scope of the edit (SINGLE, FROM, or ALL)
    */
-  public EditEventCommand(ICalendarService service, String meeting, LocalDateTime target,
-      String subject, String teamMeeting, EditMode editMode) {
-    this(service, meeting, target, subject, teamMeeting, editMode, false);
+  public EditEventCommand(ICalendarService service, String subject, LocalDateTime start,
+      String property, String newValue, EditMode editMode) {
+    this(service, subject, start, property, newValue, editMode, false);
   }
 
   /**
@@ -50,7 +49,6 @@ public class EditEventCommand implements Command {
     this.property = property;
     this.newValue = newValue;
     this.mode = mode;
-    this.autoDecline = autoDecline;
   }
 
   /**
@@ -83,5 +81,7 @@ public class EditEventCommand implements Command {
   /**
    * Enum defining the scope of the edit operation.
    */
-  public enum EditMode {SINGLE, FROM, ALL}
+  public enum EditMode {
+    SINGLE, FROM, ALL
+  }
 }

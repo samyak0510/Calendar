@@ -13,7 +13,7 @@ public class CreateCalendarCommand implements Command {
   private String timezone;
 
   /**
-   * Creates a new command for adding a calendar to the service.
+   * Constructor for the class.
    *
    * @param multiCalendarService The service managing multiple calendars
    * @param calendarName         The name for the new calendar

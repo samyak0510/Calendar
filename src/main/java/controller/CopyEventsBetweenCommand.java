@@ -16,7 +16,7 @@ public class CopyEventsBetweenCommand implements Command {
   private LocalDate targetStartDate;
 
   /**
-   * Creates a new command for copying events between specified date ranges.
+   * Constructor for the class.
    *
    * @param multiCalendarService The service managing multiple calendars
    * @param sourceStartDate      The start date of the source event range
