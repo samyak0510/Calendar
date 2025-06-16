@@ -1,7 +1,7 @@
 package controller;
 
 /**
- * Represents a command that can be executed.
+ * Represents a command interface that can be executed. This is part of Command Design Pattern.
  */
 public interface Command {
 

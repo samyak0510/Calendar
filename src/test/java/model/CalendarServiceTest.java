@@ -13,7 +13,8 @@ import java.util.List;
 import org.junit.Test;
 
 /**
- * JUnit Test Case
+ * Unit tests for CalendarService. These tests ensure event creation, editing, export, printing, and
+ * conflict detection are functioning correctly.
  */
 
 public class CalendarServiceTest {
@@ -97,7 +98,7 @@ public class CalendarServiceTest {
         LocalDateTime.of(2025, 3, 27, 19, 0),
         LocalDateTime.of(2025, 3, 27, 20, 0),
         "Family dinner", "Home", true, true);
-    String filePath = service.exporttoCSV("csv", "test_export.csv");
+    String filePath = service.exportTo("csv", "test_export.csv");
     assertNotNull(filePath);
     File file = new File(filePath);
     assertTrue(file.exists());

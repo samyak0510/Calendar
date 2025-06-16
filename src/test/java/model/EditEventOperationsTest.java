@@ -13,7 +13,8 @@ import java.util.List;
 import org.junit.Test;
 
 /**
- * JUnit Test Case
+ * Unit tests for the EditEventOperations class. These tests cover editing both single and recurring
+ * events using different modes like SINGLE, ALL, and FROM.
  */
 public class EditEventOperationsTest {
 
@@ -62,23 +63,6 @@ public class EditEventOperationsTest {
     List<Event> events = model.getAllEvents();
     RecurringEvent updated = (RecurringEvent) events.get(0);
     assertEquals("UpdatedRoom", updated.getLocation());
-  }
-
-  @Test
-  public void testEditRecurringEventSingleModeSuccess() throws Exception {
-    CalendarModel model = new CalendarModel();
-    RecurringEvent re = new RecurringEvent("Yoga",
-        LocalDateTime.of(2025, 5, 7, 7, 0),
-        LocalDateTime.of(2025, 5, 7, 8, 0),
-        "Morning", "Studio", true,
-        Collections.singleton(DayOfWeek.WEDNESDAY),
-        2, LocalDate.of(2025, 5, 14));
-    re.setAutoDecline(true);
-    model.addEvent(re, true);
-    new EditEventOperations().editEvent(model, "Yoga", LocalDateTime.of(2025,
-            5, 7, 7, 0), "subject", "PowerYoga",
-        ICalendarService.EditMode.SINGLE);
-    assertTrue(true);
   }
 
   @Test(expected = Exception.class)

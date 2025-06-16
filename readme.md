@@ -1,12 +1,12 @@
 # Virtual Calendar Application
-> **New in Sprint 3:** Multi-calendar support with timezone management, enhanced event operations, and universal conflict detection.
+> **New in Sprint 4:** Java Swing GUI with month view and analytics dashboard, CSV import, and unified controller across CLI, headless, and GUI modes.
 > **Full changelog →** [`changelog.md`](changelog.md)
 
 ## Overview
 
 This project implements a comprehensive virtual calendar application that mimics the core features of popular calendar software like Google Calendar and iCalendar. Built using Java with Maven, the application follows MVC (Model-View-Controller) architecture and SOLID design principles to ensure maintainability, scalability, and extensibility.
 
-**Sprint 3 Evolution:** Building upon Assignment 4's foundation, Assignment 5 introduces multi-calendar support with timezone management, enhanced event operations, and improved architectural design. The system now supports multiple calendars with unique names and IANA timezones, event copying between calendars, and automatic timezone migration.
+**Sprint 4 Evolution:** Building upon previous iterations, Assignment 6 delivers an intuitive Java Swing GUI with month view, and day dialog. A unified controller now powers CLI, headless scripts, and GUI modes from a single JAR. Additional features include CSV import, and enhanced mutation-tested codebase.
 
 ## Visual Demonstrations
 
@@ -24,7 +24,11 @@ This project implements a comprehensive virtual calendar application that mimics
 
 ### Test Coverage and Quality Assurance
 ![Mutation Testing Results](images/Mutation%20Testing.png)
-*Comprehensive mutation testing ensuring 90%+ test strength, mutation coverage, and line coverage.*
+*Comprehensive mutation testing ensuring **89%** test strength, mutation coverage, and line coverage.*
+
+### Graphical User Interface (NEW)
+![GUI Month View](images/GUI_Month.png)
+*Month view with calendars and quick-access event dialog*
 
 ## Key Features
 
@@ -56,9 +60,9 @@ This project implements a comprehensive virtual calendar application that mimics
 - Seamless integration with external calendar applications
 
 ### **User Interface**
-- **Interactive Mode**: Real-time command input with immediate feedback
-- **Headless Mode**: Batch processing from command files
-- Comprehensive command-line interface with intuitive syntax
+- **GUI Mode (default)**: Double-click the JAR or run `java -jar Assignment6.jar` to launch the Swing interface.
+- **Interactive Mode**: Real-time command input with immediate feedback (`java -jar Assignment6.jar --mode interactive`).
+- **Headless Mode**: Batch processing from command files (`java -jar Assignment6.jar --mode headless commands.txt`).
 
 ## System Architecture
 
@@ -88,28 +92,21 @@ The application follows the MVC pattern with clear separation of concerns:
 
 The application is now distributed as a compiled JAR file for easy execution:
 
-#### Interactive Mode
-Navigate to the `res/` directory and run:
+#### GUI Mode (default)
 ```bash
-java -jar Assignment5.jar --mode interactive
+java -jar Assignment6.jar
 ```
-You will then see a prompt where you can type commands directly.
+Launches the Swing interface.
+
+#### Interactive Mode
+```bash
+java -jar Assignment6.jar --mode interactive
+```
 
 #### Headless Mode
-1. **Using provided demonstration file:**
-   ```bash
-   run headless.bat
-   ```
-   or manually:
-   ```bash
-   java -jar Assignment5.jar --mode headless headless.txt
-   ```
-
-2. **Using custom command file:**
-   Create a text file with one command per line, ensuring the last line is `exit`, then run:
-   ```bash
-   java -jar Assignment5.jar --mode headless your_commands.txt
-   ```
+```bash
+java -jar Assignment6.jar --mode headless headless.txt
+```
 
 ### Development Setup (Optional)
 
@@ -158,7 +155,7 @@ For development and testing purposes:
 ### Comprehensive Test Suite
 - **Unit Tests**: Individual component testing
 - **Integration Tests**: End-to-end workflow validation
-- **Mutation Testing**: 90%+ test strength using PIT framework
+- **Mutation Testing**: **89%** mutation coverage using PIT framework
 - **Edge Case Coverage**: Robust error handling and validation
 
 ### Running Tests
@@ -205,12 +202,17 @@ mvn org.pitest:pitest-maven:mutationCoverage  # Run mutation testing
 - **Editing Events:**  
   - Basic editing of events is supported (subject, description, location, start time, and end time).  
   - Supports SINGLE, FROM, and ALL modes for editing.
-  
+
+- **Graphical User Interface:**
+  - Month view navigation, day detail pop-ups, drag-to-create events.
+
+- **Import from CSV:**
+  - Bulk event import compatible with Google Calendar CSV export.
 
 ## Resources and Documentation
 
 - **Complete Documentation**: Available in `/docs` folder (Javadoc generated)
-- **Executable JAR**: Ready-to-run application in `/res/Assignment5.jar`
+- **Executable JAR**: Ready-to-run application in `/res/Assignment6.jar`
 - **Demo Commands**: Demonstration commands in `/res/headless.txt`
 - **UML Diagrams**: Complete system architecture in `/res/UML Diagram.pdf`
 - **Test Reports**: Mutation testing reports in `/res/pit-reports/`

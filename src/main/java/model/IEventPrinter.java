@@ -21,7 +21,7 @@ public interface IEventPrinter {
    * Prints events within a specific time range.
    *
    * @param start the start datetime
-   * @param end the end datetime
+   * @param end   the end datetime
    * @return formatted string of events
    * @throws Exception if an error occurs
    */

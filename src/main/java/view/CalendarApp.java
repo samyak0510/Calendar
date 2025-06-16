@@ -1,7 +1,8 @@
 package view;
 
-import controller.ExtendedCalendarController;
-import controller.ICalendarController;
+import controller.CalendarControllerFactory;
+import controller.IAppController;
+import controller.ICalendarControllerFactory;
 import model.CalendarManager;
 import model.ICalendarManager;
 import model.IMultiCalendarService;
@@ -18,18 +19,17 @@ public class CalendarApp {
    *
    * @param args command line arguments: --mode [interactive|headless] [optional command file]
    */
-  public static void main(String[] args) {
-    if (args.length < 2) {
-      System.out.println("Usage: java View.CalendarApp --mode interactive|headless");
-      return;
-    }
+  public static void main(String[] args) throws Exception {
 
     ICalendarManager calendarManager = new CalendarManager();
     IMultiCalendarService service = new MultiCalendarService(calendarManager);
-    ICalendarController controller = new ExtendedCalendarController(service);
-    CalendarView calendarView = new CalendarView(controller, args);
 
-    calendarView.start();
+    ICalendarView view = new CalendarGUI();
+
+    ICalendarControllerFactory factory = new CalendarControllerFactory();
+    IAppController controller = factory.createController(args, service, view);
+
+    controller.start();
   }
 }
 

@@ -30,6 +30,11 @@ public class EventPrinter implements IEventPrinter {
   @Override
   public String printEventsOn(LocalDate date) throws Exception {
     List<Event> events = model.getEventsOn(date);
+
+    if (events.isEmpty()) {
+      return "";
+    }
+
     StringBuilder sb = new StringBuilder();
     sb.append("Events on ").append(date).append(":\n");
     for (Event event : events) {
@@ -47,7 +52,7 @@ public class EventPrinter implements IEventPrinter {
    * Prints all events that occur between the given start and end timestamps.
    *
    * @param start the start of the time range
-   * @param end the end of the time range
+   * @param end   the end of the time range
    * @return a string listing all events in the specified range
    * @throws Exception if an error occurs while retrieving events
    */

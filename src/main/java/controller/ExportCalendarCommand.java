@@ -10,6 +10,7 @@ import model.ICalendarService;
 public class ExportCalendarCommand implements Command {
 
   private ICalendarService calendarService;
+  private String format;
   private String fileName;
 
   /**
@@ -18,8 +19,9 @@ public class ExportCalendarCommand implements Command {
    * @param calendarService The service managing the calendar
    * @param fileName        The name of the file to export to
    */
-  public ExportCalendarCommand(ICalendarService calendarService, String fileName) {
+  public ExportCalendarCommand(ICalendarService calendarService, String format, String fileName) {
     this.calendarService = calendarService;
+    this.format = format;
     this.fileName = fileName;
   }
 
@@ -32,7 +34,7 @@ public class ExportCalendarCommand implements Command {
   @Override
   public String execute() throws Exception {
     try {
-      String path = calendarService.exporttoCSV("csv", fileName);
+      String path = calendarService.exportTo(format, fileName);
       return "Calendar exported to: " + path;
     } catch (IOException e) {
       return "Export failed: " + e.getMessage();

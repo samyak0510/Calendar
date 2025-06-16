@@ -13,7 +13,7 @@ public class EditCalendarCommand implements Command {
   private String newValue;
 
   /**
-   * Constructs a command to edit a calendar’s specified property.
+   * Constructor of the class.
    *
    * @param multiCalendarService The service managing multiple calendars
    * @param calendarName         The name of the calendar to edit

@@ -31,12 +31,6 @@ public class SingleEvent extends AbstractEvent {
     this.endDateTime = endDateTime;
   }
 
-  /**
-   * Returns the effective end date and time of the event. If no end time is set, it defaults to
-   * 23:59 of the start date.
-   *
-   * @return the effective end date and time
-   */
 
   /**
    * Checks if this event conflicts with another event.

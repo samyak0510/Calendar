@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.Test;
 
 /**
- * JUnit Test Case
+ * JUnit Test Cases for EventCopyHelper class.
  */
 public class EventCopyHelperTest {
 

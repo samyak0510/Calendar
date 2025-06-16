@@ -10,18 +10,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * JUnit Test Case
+ * Tests for the PrintEventsRangeCommand class. This verifies that events scheduled within a
+ * specific time window are printed correctly by the command.
  */
 
 public class PrintEventsRangeCommandTest {
 
-  private CalendarModel calendara;
   private ICalendarService calendar;
 
 
   @Before
   public void setUp() throws Exception {
-    calendara = new CalendarModel();
+    CalendarModel calendara = new CalendarModel();
     calendar = new CalendarService(calendara);
     LocalDateTime start = LocalDateTime.of(2025, 3, 1, 9, 0);
     LocalDateTime end = LocalDateTime.of(2025, 3, 1, 10, 0);

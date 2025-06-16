@@ -12,13 +12,13 @@ public class EventMigrationHelper {
   /**
    * Migrates all events in the given calendar from an old timezone to a new timezone.
    *
-   *
    * @param calendar the calendar context containing the events to migrate
-   * @param oldZone the original timezone of the events
-   * @param newZone the new timezone to which events should be migrated
+   * @param oldZone  the original timezone of the events
+   * @param newZone  the new timezone to which events should be migrated
    * @throws Exception if there is an issue retrieving or updating the events
    */
-  public static void migrateEvents(ICalendarContext calendar, ZoneId oldZone, ZoneId newZone) throws Exception {
+  public static void migrateEvents(ICalendarContext calendar, ZoneId oldZone, ZoneId newZone)
+      throws Exception {
     List<Event> events = calendar.getCalendarService().getAllEvents();
     for (Event e : events) {
       if (e instanceof SingleEvent) {

@@ -11,17 +11,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * JUnit Test Case
+ * JUnit Test Cases for PrintEventsCommandTest.
  */
-
 public class PrintEventsCommandTest {
 
   ICalendarService calendar;
-  private CalendarModel calendara;
 
   @Before
   public void setUp() throws Exception {
-    calendara = new CalendarModel();
+    CalendarModel calendara = new CalendarModel();
     calendar = new CalendarService(calendara);
     LocalDateTime start = LocalDateTime.of(2025, 3, 1, 9, 0);
     LocalDateTime end = LocalDateTime.of(2025, 3, 1, 10, 0);

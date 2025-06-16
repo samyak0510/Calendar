@@ -13,14 +13,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * JUnit Test Case
+ * JUnit Test Cases for CreateRecurringEventCommandTest class.
  */
 
 public class CreateRecurringEventCommandTest {
 
   private CalendarModel calendar;
   private CreateCommandParser parser;
-  private ICalendarService calendarService;
 
   /**
    * Sets up the test fixture before each test.
@@ -28,7 +27,7 @@ public class CreateRecurringEventCommandTest {
   @Before
   public void setUp() {
     calendar = new CalendarModel();
-    calendarService = new CalendarService(calendar);
+    ICalendarService calendarService = new CalendarService(calendar);
     parser = new CreateCommandParser(calendarService);
   }
 

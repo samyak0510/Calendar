@@ -11,9 +11,8 @@ import model.MultiCalendarService;
 import org.junit.Test;
 
 /**
- * JUnit Test Case
+ * JUnit Test Cases for UseCalendarCommandTest.
  */
-
 public class UseCalendarCommandTest {
 
   @Test

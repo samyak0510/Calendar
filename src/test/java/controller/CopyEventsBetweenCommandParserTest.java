@@ -8,6 +8,9 @@ import model.IMultiCalendarService;
 import model.MultiCalendarService;
 import org.junit.Test;
 
+/**
+ * Test cases for the CopyEventsBetweenCommandParser class.
+ */
 public class CopyEventsBetweenCommandParserTest {
 
   @Test

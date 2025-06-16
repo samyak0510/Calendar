@@ -10,9 +10,8 @@ import model.MultiCalendarService;
 import org.junit.Test;
 
 /**
- * JUnit Test Case
+ * Test Cases for {@link UseCalendarCommandParser}.
  */
-
 public class UseCalendarCommandParserTest {
 
   @Test

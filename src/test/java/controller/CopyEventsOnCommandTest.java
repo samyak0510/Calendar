@@ -10,6 +10,9 @@ import model.IMultiCalendarService;
 import model.MultiCalendarService;
 import org.junit.Test;
 
+/**
+ * JUnit Test Cases for UseCalendarCommandTest.
+ */
 public class CopyEventsOnCommandTest {
 
   @Test

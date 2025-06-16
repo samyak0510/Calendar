@@ -12,7 +12,7 @@ public interface ICalendarModel {
   /**
    * Adds an event to the model.
    *
-   * @param event the event to add
+   * @param event       the event to add
    * @param autoDecline whether conflicting events should be auto-declined
    * @throws EventConflictException if the event conflicts with an existing one
    */

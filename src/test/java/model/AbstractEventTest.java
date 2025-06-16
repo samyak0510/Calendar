@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 import org.junit.Test;
 
 /**
- * JUnit Test Case
+ * JUnit Test Case for {@link AbstractEvent} class. Tests the functionality which is shared both by
+ * {@code RecurringEvent & SingleEvent}.
  */
 
 public class AbstractEventTest {

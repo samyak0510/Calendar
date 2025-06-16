@@ -9,7 +9,7 @@ import model.MultiCalendarService;
 import org.junit.Test;
 
 /**
- * JUnit Test Case
+ * JUnit Test Case for {@link EditCalendarCommandParser}.
  */
 
 public class EditCalendarCommandParserTest {
@@ -20,7 +20,7 @@ public class EditCalendarCommandParserTest {
         new EditCalendarCommandParser(new MultiCalendarService(new CalendarManager()));
     String[] input = {"edit", "calendar", "--name", "OldName", "--property", "name", "NewName"};
 
-    Object cmd = parser.parse(input);
+    Command cmd = parser.parse(input);
     assertTrue(cmd instanceof EditCalendarCommand);
   }
 
@@ -29,8 +29,20 @@ public class EditCalendarCommandParserTest {
     IMultiCalendarService service = new MultiCalendarService(new CalendarManager());
     EditCalendarCommandParser parser = new EditCalendarCommandParser(service);
     String[] input = {"edit", "calendar", "OldCal"};
-    Object result = parser.parse(input);
+    Command result = parser.parse(input);
     assertFalse(result instanceof EditCalendarCommand);
   }
+
+  @Test
+  public void emptyParse() throws Exception {
+    IMultiCalendarService service = new MultiCalendarService(new CalendarManager());
+    EditCalendarCommandParser parser = new EditCalendarCommandParser(service);
+    String[] input = {};
+    Command result = parser.parse(input);
+    String r = result.execute();
+    assertTrue(r.equals("Invalid edit calendar command."));
+
+  }
+
 }
 

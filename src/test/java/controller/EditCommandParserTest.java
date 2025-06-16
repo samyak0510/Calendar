@@ -17,7 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * JUnit Test Case
+ * JUnit Test Case for {@link EditCommandParser}.
  */
 
 public class EditCommandParserTest {
@@ -54,7 +54,8 @@ public class EditCommandParserTest {
     } catch (Exception e) {
       fail(e.getMessage());
     }
-    String[] tokens = ("edit event subject Meeting from 2025-03-01T09:00 to 2025-03-01T10:00 with TeamMeeting").split(
+    String[] tokens = ("edit event subject Meeting from 2025-03-01T09:00 to "
+        + "2025-03-01T10:00 with TeamMeeting").split(
         "\\s+");
     Command cmd = parsera.parse(tokens);
     assertNotNull(cmd);
@@ -233,7 +234,8 @@ public class EditCommandParserTest {
         LocalDateTime.of(2025, 3, 1, 10, 0),
         "", "", true, false);
 
-    String[] tokens = ("edit event subject Meeting from 2025-03-01T09:00 to 2025-03-01T10:00 with TeamMeeting")
+    String[] tokens = ("edit event subject Meeting from 2025-03-01T09:00 to "
+        + "2025-03-01T10:00 with TeamMeeting")
         .split("\\s+");
     Command cmd = parser.parse(tokens);
     assertNotNull(cmd);
@@ -388,6 +390,34 @@ public class EditCommandParserTest {
     Command cmd = parser.parse(tokens);
     String result = cmd.execute();
     assertEquals("Edit command missing 'with' and new value.", result);
+  }
+
+  @Test
+  public void testAutoDeclineAsLastToken() throws Exception {
+    String[] tokens = "edit event --autoDecline".split("\\s+");
+    Command cmd = parser.parse(tokens);
+    assertTrue(cmd.execute().contains("Error processing edit command"));
+  }
+
+  @Test
+  public void testMissingDateTimeAfterFrom() throws Exception {
+    String[] tokens = "edit event subject Meeting from".split("\\s+");
+    Command cmd = parser.parse(tokens);
+    assertTrue(cmd.execute().contains("Error processing edit command"));
+  }
+
+  @Test
+  public void testWithAtLastPosition() throws Exception {
+    String[] tokens = "edit events subject Meeting with".split("\\s+");
+    Command cmd = parser.parse(tokens);
+    assertEquals("Edit command missing 'with' and new value.", cmd.execute());
+  }
+
+  @Test
+  public void testInvalidCommandAfterEditEvents() throws Exception {
+    String[] tokens = "edit events invalid".split("\\s+");
+    Command cmd = parser.parse(tokens);
+    assertTrue(cmd.execute().contains("Error processing edit command"));
   }
 
 }

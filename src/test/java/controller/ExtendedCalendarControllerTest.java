@@ -9,7 +9,7 @@ import model.MultiCalendarService;
 import org.junit.Test;
 
 /**
- * JUnit Test Case
+ * Tests for the {@link ExtendedCalendarControllerTest}.
  */
 
 public class ExtendedCalendarControllerTest {
