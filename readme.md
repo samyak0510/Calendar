@@ -27,7 +27,7 @@ This project implements a comprehensive virtual calendar application that mimics
 *Comprehensive mutation testing ensuring **89%** test strength, mutation coverage, and line coverage.*
 
 ### Graphical User Interface (NEW)
-![GUI Month View](images/GUI_Month.png)
+![GUI View](images/GUI.png)
 *Month view with calendars and quick-access event dialog*
 
 ## Key Features
