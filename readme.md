@@ -1,4 +1,11 @@
 # Virtual Calendar Application
+
+[![CI/CD Pipeline](https://github.com/samyak0510/Calendar/actions/workflows/ci.yml/badge.svg)](https://github.com/samyak0510/Calendar/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/samyak0510/Calendar/branch/main/graph/badge.svg)](https://codecov.io/gh/samyak0510/Calendar)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Java](https://img.shields.io/badge/Java-8+-red.svg)](https://www.oracle.com/java/)
+[![Maven](https://img.shields.io/badge/Maven-3.6+-blue.svg)](https://maven.apache.org/)
+
 > **New in Sprint 4:** Java Swing GUI with month view and analytics dashboard, CSV import, and unified controller across CLI, headless, and GUI modes.
 > **Full changelog →** [`changelog.md`](changelog.md)
 
@@ -152,17 +159,34 @@ For development and testing purposes:
 
 ## Testing and Quality Assurance
 
-### Comprehensive Test Suite
-- **Unit Tests**: Individual component testing
-- **Integration Tests**: End-to-end workflow validation
-- **Mutation Testing**: **89%** mutation coverage using PIT framework
-- **Edge Case Coverage**: Robust error handling and validation
+### Automated CI/CD Pipeline
+Our GitHub Actions workflow automatically runs on every push and pull request to the main branch:
 
-### Running Tests
+- **Unit Tests**: 450+ comprehensive test cases with JUnit 4
+- **Code Coverage**: JaCoCo reports with 85%+ line coverage threshold
+- **Mutation Testing**: PIT framework ensuring 89% mutation coverage
+- **Quality Gates**: Automated coverage thresholds and build validation
+- **Artifact Generation**: Automatic JAR builds and test report uploads
+
+### CI/CD Features
+- **Parallel Testing**: Fast execution with Maven dependency caching
+- **Coverage Reports**: Automated JaCoCo and PIT report generation
+- **Quality Enforcement**: Build fails if coverage drops below 85%
+- **Artifact Storage**: 30-day retention for test reports, 90-day for JARs
+- **PR Integration**: Automatic coverage comments on pull requests
+
+### Running Tests Locally
 ```bash
-mvn test                    # Run all unit tests
-mvn org.pitest:pitest-maven:mutationCoverage  # Run mutation testing
+mvn clean test                                    # Run unit tests with JaCoCo
+mvn jacoco:report                                # Generate coverage report
+mvn org.pitest:pitest-maven:mutationCoverage     # Run mutation testing
+mvn verify                                       # Run all tests with quality gates
 ```
+
+### Test Reports Location
+- **JaCoCo Coverage**: `target/site/jacoco/index.html`
+- **PIT Mutation**: `target/pit-reports/index.html`
+- **Surefire Results**: `target/surefire-reports/`
 
 ## Features That Work
 
@@ -217,10 +241,17 @@ mvn org.pitest:pitest-maven:mutationCoverage  # Run mutation testing
 - **UML Diagrams**: Complete system architecture in `/res/UML Diagram.pdf`
 - **Test Reports**: Mutation testing reports in `/res/pit-reports/`
 
+## Project Links
+
+- **GitHub Repository**: [https://github.com/samyak0510/Calendar/](https://github.com/samyak0510/Calendar/)
+- **CI/CD Pipeline**: [GitHub Actions](https://github.com/samyak0510/Calendar/actions)
+- **Coverage Reports**: [Codecov Dashboard](https://codecov.io/gh/samyak0510/Calendar)
+- **Release Downloads**: [GitHub Releases](https://github.com/samyak0510/Calendar/releases)
 
 ## Acknowledgments
 
 This project demonstrates advanced software engineering principles including SOLID design, comprehensive testing, and professional documentation standards. The implementation showcases enterprise-level code quality and architectural decisions suitable for production environments.
 
+**Academic Context**: This was developed as a comprehensive project for the Program Design Paradigm (PDP) course at Northeastern University under Prof. Amit Shesh, evolving through four iterative assignments to demonstrate incremental software development, design pattern implementation, and professional software engineering practices.
+
 Thank you for reviewing our Virtual Calendar Application!
-+ This was a project at Northeastern University, an academic project in Program Design Paradigm (PDP) under Prof Amit Shesh.

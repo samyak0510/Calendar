@@ -5,42 +5,122 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.example</groupId>
-  <artifactId>Assignment5</artifactId>
+  <artifactId>Assignment6</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <junit.version>4.13.2</junit.version>
+    <junit.jupiter.version>5.9.3</junit.jupiter.version>
+    <testng.version>7.8.0</testng.version>
+    <jacoco.version>0.8.10</jacoco.version>
+    <pitest.version>1.15.0</pitest.version>
+    <surefire.version>3.1.2</surefire.version>
+    <compiler.version>3.11.0</compiler.version>
+    <jar.version>3.3.0</jar.version>
   </properties>
+  
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.2</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>RELEASE</version>
+      <version>${junit.jupiter.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>RELEASE</version>
+      <version>${testng.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
 
   <build>
-
     <plugins>
+      <!-- Maven Surefire Plugin for running tests -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${surefire.version}</version>
+        <configuration>
+          <includes>
+            <include>**/*Test.java</include>
+            <include>**/*Tests.java</include>
+            <include>**/Test*.java</include>
+          </includes>
+          <excludes>
+            <exclude>**/Abstract*.java</exclude>
+          </excludes>
+          <reportFormat>xml</reportFormat>
+          <useFile>true</useFile>
+          <forkCount>1</forkCount>
+          <reuseForks>true</reuseForks>
+          <failIfNoTests>false</failIfNoTests>
+          <testFailureIgnore>true</testFailureIgnore>
+          <redirectTestOutputToFile>true</redirectTestOutputToFile>
+          <trimStackTrace>false</trimStackTrace>
+          <printSummary>true</printSummary>
+          <argLine>-Dfile.encoding=UTF-8</argLine>
+        </configuration>
+      </plugin>
+
+      <!-- JaCoCo Plugin for code coverage -->
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco.version}</version>
+        <executions>
+          <execution>
+            <id>default-prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>default-report</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>jacoco-check</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <rule>
+                  <element>BUNDLE</element>
+                  <limits>
+                    <limit>
+                      <counter>LINE</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>0.50</minimum>
+                    </limit>
+                  </limits>
+                </rule>
+              </rules>
+              <haltOnFailure>false</haltOnFailure>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- PIT Mutation Testing Plugin -->
       <plugin>
         <groupId>org.pitest</groupId>
         <artifactId>pitest-maven</artifactId>
-        <version>1.17.2</version>
+        <version>${pitest.version}</version>
         <configuration>
           <targetClasses>
             <param>model.*</param>
@@ -50,6 +130,42 @@
             <param>model.*</param>
             <param>controller.*</param>
           </targetTests>
+          <outputFormats>
+            <outputFormat>XML</outputFormat>
+            <outputFormat>HTML</outputFormat>
+          </outputFormats>
+          <timestampedReports>false</timestampedReports>
+          <mutationThreshold>50</mutationThreshold>
+          <coverageThreshold>50</coverageThreshold>
+          <failWhenNoMutations>false</failWhenNoMutations>
+          <skipFailingTests>true</skipFailingTests>
+        </configuration>
+      </plugin>
+
+      <!-- Maven Compiler Plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${compiler.version}</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+
+      <!-- Maven JAR Plugin for executable JAR -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${jar.version}</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <mainClass>view.CalendarApp</mainClass>
+            </manifest>
+          </archive>
         </configuration>
       </plugin>
     </plugins>
