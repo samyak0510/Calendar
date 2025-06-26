@@ -22,7 +22,7 @@ jobs:
           cache: 'maven'
 
       - name: Build and test with Maven
-        run: mvn -B clean verify
+        run: mvn -B clean verify jacoco:report
 
       - name: Generate test report
         uses: dorny/test-reporter@v1
