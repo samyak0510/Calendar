@@ -54,7 +54,7 @@
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
           <trimStackTrace>false</trimStackTrace>
           <printSummary>true</printSummary>
-          <argLine>-Dfile.encoding=UTF-8</argLine>
+          <argLine>${jacoco.argLine} -Dfile.encoding=UTF-8</argLine>
         </configuration>
       </plugin>
 
