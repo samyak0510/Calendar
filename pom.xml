@@ -9,13 +9,12 @@
   <version>1.0-SNAPSHOT</version>
 
   <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit.version>4.13.2</junit.version>
     <junit.jupiter.version>5.9.3</junit.jupiter.version>
-    <testng.version>7.8.0</testng.version>
-    <jacoco.version>0.8.10</jacoco.version>
+    <jacoco.version>0.8.11</jacoco.version>
     <pitest.version>1.15.0</pitest.version>
     <surefire.version>3.1.2</surefire.version>
     <compiler.version>3.11.0</compiler.version>
@@ -27,18 +26,6 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
-      <version>${junit.jupiter.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>${testng.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -59,7 +46,6 @@
           <excludes>
             <exclude>**/Abstract*.java</exclude>
           </excludes>
-          <reportFormat>xml</reportFormat>
           <useFile>true</useFile>
           <forkCount>1</forkCount>
           <reuseForks>true</reuseForks>
@@ -78,18 +64,24 @@
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>${jacoco.version}</version>
         <executions>
+          <!-- Attach the JaCoCo agent during tests -->
           <execution>
-            <id>default-prepare-agent</id>
+            <id>prepare-agent</id>
+            <phase>initialize</phase>
             <goals>
               <goal>prepare-agent</goal>
             </goals>
           </execution>
+          <!-- Generate the coverage report after tests run -->
           <execution>
-            <id>default-report</id>
-            <phase>test</phase>
+            <id>report</id>
+            <phase>verify</phase>
             <goals>
               <goal>report</goal>
             </goals>
+            <configuration>
+              <outputDirectory>${project.reporting.outputDirectory}/jacoco</outputDirectory>
+            </configuration>
           </execution>
           <execution>
             <id>jacoco-check</id>
@@ -148,8 +140,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${compiler.version}</version>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+          <source>11</source>
+          <target>11</target>
           <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
