@@ -80,11 +80,11 @@
               <goal>report</goal>
             </goals>
             <configuration>
-              <reports>
-                <report>xml</report>
-                <report>html</report>
-              </reports>
               <outputDirectory>${project.reporting.outputDirectory}/jacoco</outputDirectory>
+              <reports>
+                <xml>true</xml>
+                <html>true</html>
+              </reports>
             </configuration>
           </execution>
           <execution>
