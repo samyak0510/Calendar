@@ -46,7 +46,6 @@
           <excludes>
             <exclude>**/Abstract*.java</exclude>
           </excludes>
-          <reportFormat>xml</reportFormat>
           <useFile>true</useFile>
           <forkCount>1</forkCount>
           <reuseForks>true</reuseForks>
@@ -68,22 +67,23 @@
           <!-- Attach the JaCoCo agent during tests -->
           <execution>
             <id>prepare-agent</id>
+            <phase>initialize</phase>
             <goals>
               <goal>prepare-agent</goal>
             </goals>
           </execution>
-          <!-- Generate the coverage report in verify phase -->
+          <!-- Generate the coverage report during package preparation -->
           <execution>
             <id>report</id>
-            <phase>verify</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>report</goal>
             </goals>
             <configuration>
               <outputDirectory>${project.reporting.outputDirectory}/jacoco</outputDirectory>
               <reports>
-                <xml>true</xml>
-                <html>true</html>
+                <report>xml</report>
+                <report>html</report>
               </reports>
             </configuration>
           </execution>
