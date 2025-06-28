@@ -14,7 +14,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit.version>4.13.2</junit.version>
     <junit.jupiter.version>5.9.3</junit.jupiter.version>
-    <testng.version>7.8.0</testng.version>
     <jacoco.version>0.8.11</jacoco.version>
     <pitest.version>1.15.0</pitest.version>
     <surefire.version>3.1.2</surefire.version>
@@ -27,12 +26,6 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>${testng.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
